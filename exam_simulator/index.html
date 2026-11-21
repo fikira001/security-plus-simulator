@@ -712,46 +712,146 @@
           <div class="section-container">
             <div class="section-header">
               <div>
-                <h2 class="section-title">Official SY0-701 Acronym Flashcards & Quiz</h2>
-                <span class="section-sub">Master all 316 official acronyms from the CompTIA objectives</span>
+                <h2 class="section-title">Official SY0-701 Acronym Flashcards & Term Explainer</h2>
+                <span class="section-sub">Master all 314 official Security+ acronyms with plain-English explanations and high-yield exam associations</span>
               </div>
             </div>
 
+            <!-- Toolbar: Mode Switcher + Domain Filter Pills + Instant Search -->
             <div class="acronym-toolbar">
               <div class="mode-toggle-group">
-                <button id="acro-flashcard-mode-btn" class="pill-btn active" onclick="app.setAcronymMode('flashcard')">Flashcard Flip Mode</button>
-                <button id="acro-quiz-mode-btn" class="pill-btn" onclick="app.setAcronymMode('quiz')">4-Option Recall Quiz</button>
-                <button id="acro-table-mode-btn" class="pill-btn" onclick="app.setAcronymMode('table')">Searchable Glossary</button>
+                <button id="acro-flashcard-mode-btn" class="pill-btn active" onclick="app.setAcronymMode('flashcard')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                  Interactive Flashcards
+                </button>
+                <button id="acro-quiz-mode-btn" class="pill-btn" onclick="app.setAcronymMode('quiz')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  4-Option Recall Quiz
+                </button>
+                <button id="acro-table-mode-btn" class="pill-btn" onclick="app.setAcronymMode('table')">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+                  Searchable Knowledge Table
+                </button>
               </div>
-              <div class="search-box">
-                <input type="text" id="acronym-search-input" placeholder="Search acronym or definition..." oninput="app.searchAcronyms(this.value)">
+
+              <div class="acro-search-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+                <input type="text" id="acronym-search-input" placeholder="Search term, cipher, or concept..." oninput="app.searchAcronyms(this.value)">
               </div>
+            </div>
+
+            <!-- Domain Filter Badges -->
+            <div class="acro-domain-filter-pills">
+              <button class="acro-filter-pill active" data-acro-dom="all" onclick="app.filterAcronymsByDomain('all')">All Domains (314)</button>
+              <button class="acro-filter-pill" data-acro-dom="1" onclick="app.filterAcronymsByDomain(1)">D1: General Concepts</button>
+              <button class="acro-filter-pill" data-acro-dom="2" onclick="app.filterAcronymsByDomain(2)">D2: Threats & Mitigations</button>
+              <button class="acro-filter-pill" data-acro-dom="3" onclick="app.filterAcronymsByDomain(3)">D3: Architecture</button>
+              <button class="acro-filter-pill" data-acro-dom="4" onclick="app.filterAcronymsByDomain(4)">D4: Operations</button>
+              <button class="acro-filter-pill" data-acro-dom="5" onclick="app.filterAcronymsByDomain(5)">D5: Program Management</button>
             </div>
 
             <!-- Flashcard View -->
             <div id="acro-flashcard-view" class="acro-view-section">
               <div class="flashcard-wrapper">
+                
+                <!-- Deck Progress Bar -->
+                <div class="flashcard-progress-strip">
+                  <div class="fc-counter-label" id="fc-counter-text">Card 1 of 314</div>
+                  <div class="fc-progress-track">
+                    <div class="fc-progress-fill" id="fc-progress-fill" style="width: 1%"></div>
+                  </div>
+                  <div class="fc-deck-status" id="fc-deck-status">0 Mastered</div>
+                </div>
+
+                <!-- 3D Flippable Flashcard -->
                 <div class="flashcard" id="main-flashcard" onclick="app.flipFlashcard()">
                   <div class="card-inner">
+                    
+                    <!-- FRONT: Clean, Big Acronym with Domain Badge -->
                     <div class="card-front">
-                      <span class="card-hint">Click or press Spacebar to Flip</span>
-                      <div class="flashcard-acronym" id="card-acro-term">CASB</div>
-                      <span class="flashcard-domain-tag" id="card-acro-domain">Domain 3.0</span>
+                      <div class="card-meta-top">
+                        <span class="card-domain-badge" id="card-acro-domain">Domain 2.0</span>
+                        <span class="card-category-badge" id="card-acro-category">Threat Actors & Attacks</span>
+                      </div>
+                      
+                      <div class="card-front-center">
+                        <div class="flashcard-acronym" id="card-acro-term">APT</div>
+                        <span class="card-flip-prompt">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                          Click card or press [Space] to reveal full definition & exam breakdown
+                        </span>
+                      </div>
+
+                      <div class="card-front-footer">
+                        <span class="flip-hint-pill">Click to Flip ↻</span>
+                      </div>
                     </div>
+
+                    <!-- BACK: Expanded Name + Plain-English Explanation + Exam Cue -->
                     <div class="card-back">
-                      <span class="card-hint">Definition</span>
-                      <div class="flashcard-def" id="card-acro-def">Cloud Access Security Broker</div>
-                      <p class="flashcard-note">Software/appliance enforcing security policies between cloud consumers and cloud providers.</p>
+                      <div class="card-meta-top">
+                        <div class="card-meta-left">
+                          <span class="card-acro-chip" id="card-acro-back-term">APT</span>
+                          <span class="card-domain-badge" id="card-acro-back-domain">Domain 2.0</span>
+                        </div>
+                        <span class="card-category-badge" id="card-acro-back-category">Threat Actors & Attacks</span>
+                      </div>
+
+                      <div class="card-back-content">
+                        <h3 class="flashcard-def-title" id="card-acro-def">Advanced Persistent Threat</h3>
+                        
+                        <div class="acro-detail-box">
+                          <span class="acro-box-label">WHAT IT IS IN PLAIN ENGLISH:</span>
+                          <p class="acro-explanation-body" id="card-acro-explanation">Loading explanation...</p>
+                        </div>
+
+                        <div class="acro-exam-cue-box">
+                          <div class="cue-label-row">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z"/></svg>
+                            <span>SECURITY+ EXAM ASSOCIATION & KEYWORDS:</span>
+                          </div>
+                          <p class="cue-text" id="card-acro-exam-tip">Loading exam tip...</p>
+                        </div>
+                      </div>
+
+                      <div class="card-back-footer">
+                        <span class="flip-hint-pill">Click to Flip Back ↻</span>
+                      </div>
                     </div>
+
                   </div>
                 </div>
 
+                <!-- Navigation Action Buttons -->
                 <div class="flashcard-controls">
-                  <button class="fc-btn prev" onclick="app.prevFlashcard()">Previous</button>
-                  <button class="fc-btn mastered" onclick="app.markAcronymMastered()">Mark Mastered</button>
-                  <button class="fc-btn next" onclick="app.nextFlashcard()">Next</button>
+                  <button class="fc-nav-btn prev" onclick="event.stopPropagation(); app.prevFlashcard()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                    Previous
+                  </button>
+
+                  <button class="fc-nav-btn flip" onclick="event.stopPropagation(); app.flipFlashcard()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                    Flip Card
+                  </button>
+
+                  <button class="fc-nav-btn mastered" id="fc-master-btn" onclick="event.stopPropagation(); app.toggleAcronymMastered()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span id="fc-master-btn-text">Mark Mastered</span>
+                  </button>
+
+                  <button class="fc-nav-btn next" onclick="event.stopPropagation(); app.nextFlashcard()">
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
                 </div>
-                <div class="fc-counter" id="fc-counter-text">Card 1 of 316</div>
+
+                <!-- Keyboard shortcuts legend -->
+                <div class="fc-shortcuts-legend">
+                  <span class="key-chip">← / →</span> Navigate Cards &nbsp;•&nbsp; 
+                  <span class="key-chip">Spacebar</span> Flip &nbsp;•&nbsp; 
+                  <span class="key-chip">M</span> Mark Mastered
+                </div>
+
               </div>
             </div>
 
@@ -772,12 +872,14 @@
             <!-- Table View -->
             <div id="acro-table-view" class="acro-view-section hidden">
               <div class="table-container">
-                <table class="styled-table">
+                <table class="styled-table acro-full-table">
                   <thead>
                     <tr>
-                      <th>Acronym</th>
-                      <th>Definition</th>
-                      <th>Domain</th>
+                      <th style="width: 12%">Acronym</th>
+                      <th style="width: 24%">Full Term Name</th>
+                      <th style="width: 14%">Domain & Category</th>
+                      <th style="width: 28%">Plain-English Explanation</th>
+                      <th style="width: 22%">Key Exam Association</th>
                     </tr>
                   </thead>
                   <tbody id="acronym-table-body"></tbody>

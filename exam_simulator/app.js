@@ -24,7 +24,10 @@ class SecPlusSimulator {
 
     // Acronym state
     this.acronyms = [];
+    this.filteredAcronyms = [];
     this.currentAcronymIndex = 0;
+    this.currentAcronymDomainFilter = "all";
+    this.acronymsMastered = new Set(JSON.parse(localStorage.getItem("secplus_acro_mastered") || "[]"));
     this.acroQuizCurrent = null;
     this.acroQuizScore = { correct: 0, total: 0 };
 
@@ -55,6 +58,7 @@ class SecPlusSimulator {
       const res = await fetch("data/questions_db.json");
       this.db = await res.json();
       this.acronyms = this.db.acronyms || [];
+      this.filteredAcronyms = [...this.acronyms];
       console.log(`Database loaded: ${this.db.all_mcqs.length} MCQs, ${this.db.pbqs.length} PBQs, ${this.acronyms.length} Acronyms`);
     } catch (err) {
       console.error("Failed to load question database:", err);
@@ -216,6 +220,8 @@ class SecPlusSimulator {
           this.nextFlashcard();
         } else if (e.key === "ArrowLeft") {
           this.prevFlashcard();
+        } else if (e.key.toLowerCase() === "m") {
+          this.toggleAcronymMastered();
         }
       }
     });
@@ -1527,10 +1533,11 @@ class SecPlusSimulator {
     });
   }
 
-  // --- ACRONYM BLITZ TRAINER ---
+  // --- ACRONYM BLITZ & TERM EXPLAINER SUITE ---
   setAcronymMode(mode) {
     document.querySelectorAll(".mode-toggle-group .pill-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById(`acro-${mode}-mode-btn`).classList.add("active");
+    const activeBtn = document.getElementById(`acro-${mode}-mode-btn`);
+    if (activeBtn) activeBtn.classList.add("active");
 
     document.getElementById("acro-flashcard-view").classList.toggle("hidden", mode !== "flashcard");
     document.getElementById("acro-quiz-view").classList.toggle("hidden", mode !== "quiz");
@@ -1545,36 +1552,139 @@ class SecPlusSimulator {
     }
   }
 
-  renderAcronymFlashcard() {
-    if (!this.acronyms || this.acronyms.length === 0) return;
-    const item = this.acronyms[this.currentAcronymIndex];
-    document.getElementById("card-acro-term").innerText = item.acronym;
-    document.getElementById("card-acro-domain").innerText = `Domain ${item.domain}.0`;
-    document.getElementById("card-acro-def").innerText = item.definition;
-    document.getElementById("fc-counter-text").innerText = `Card ${this.currentAcronymIndex + 1} of ${this.acronyms.length}`;
+  filterAcronymsByDomain(domain) {
+    this.currentAcronymDomainFilter = domain;
+    document.querySelectorAll(".acro-filter-pill").forEach(p => {
+      p.classList.toggle("active", p.dataset.acroDom === domain.toString());
+    });
 
-    document.getElementById("main-flashcard").classList.remove("flipped");
+    if (domain === "all") {
+      this.filteredAcronyms = [...this.acronyms];
+    } else {
+      const dNum = parseInt(domain);
+      this.filteredAcronyms = this.acronyms.filter(a => a.domain === dNum);
+    }
+
+    this.currentAcronymIndex = 0;
+    this.renderAcronymFlashcard();
+
+    if (!document.getElementById("acro-table-view").classList.contains("hidden")) {
+      this.renderAcronymTable();
+    }
+  }
+
+  renderAcronymFlashcard() {
+    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    if (!list || list.length === 0) return;
+
+    if (this.currentAcronymIndex >= list.length) {
+      this.currentAcronymIndex = 0;
+    }
+
+    const item = list[this.currentAcronymIndex];
+    if (!item) return;
+
+    // FRONT OF CARD
+    const frontTerm = document.getElementById("card-acro-term");
+    if (frontTerm) frontTerm.innerText = item.acronym;
+
+    const frontDomain = document.getElementById("card-acro-domain");
+    if (frontDomain) frontDomain.innerText = `Domain ${item.domain || 1}.0`;
+
+    const frontCat = document.getElementById("card-acro-category");
+    if (frontCat) frontCat.innerText = item.category || "General Security";
+
+    // BACK OF CARD
+    const backTerm = document.getElementById("card-acro-back-term");
+    if (backTerm) backTerm.innerText = item.acronym;
+
+    const backDomain = document.getElementById("card-acro-back-domain");
+    if (backDomain) backDomain.innerText = `Domain ${item.domain || 1}.0`;
+
+    const backCat = document.getElementById("card-acro-back-category");
+    if (backCat) backCat.innerText = item.category || "General Security";
+
+    const backDef = document.getElementById("card-acro-def");
+    if (backDef) backDef.innerText = item.expansion || item.definition;
+
+    const backExp = document.getElementById("card-acro-explanation");
+    if (backExp) {
+      backExp.innerText = item.explanation || `The standard abbreviation for ${item.expansion || item.definition} in the CompTIA Security+ blueprint.`;
+    }
+
+    const backCue = document.getElementById("card-acro-exam-tip");
+    if (backCue) {
+      backCue.innerText = item.exam_tip || `Recognize ${item.acronym} under Domain ${item.domain || 1}.0 objectives.`;
+    }
+
+    // COUNTER & PROGRESS
+    const counterText = document.getElementById("fc-counter-text");
+    if (counterText) {
+      counterText.innerText = `Card ${this.currentAcronymIndex + 1} of ${list.length}`;
+    }
+
+    const pct = Math.round(((this.currentAcronymIndex + 1) / list.length) * 100);
+    const progressFill = document.getElementById("fc-progress-fill");
+    if (progressFill) progressFill.style.width = `${pct}%`;
+
+    const statusBadge = document.getElementById("fc-deck-status");
+    if (statusBadge) {
+      statusBadge.innerText = `${this.acronymsMastered.size} Mastered`;
+    }
+
+    // MASTERED BUTTON SYNC
+    const isMastered = this.acronymsMastered.has(item.acronym);
+    const masterBtn = document.getElementById("fc-master-btn");
+    const masterText = document.getElementById("fc-master-btn-text");
+    if (masterBtn) {
+      masterBtn.classList.toggle("is-mastered", isMastered);
+    }
+    if (masterText) {
+      masterText.innerText = isMastered ? "Mastered ✓" : "Mark Mastered";
+    }
+
+    // Unflip card
+    const cardEl = document.getElementById("main-flashcard");
+    if (cardEl) cardEl.classList.remove("flipped");
   }
 
   flipFlashcard() {
-    document.getElementById("main-flashcard").classList.toggle("flipped");
+    const cardEl = document.getElementById("main-flashcard");
+    if (cardEl) cardEl.classList.toggle("flipped");
   }
 
   nextFlashcard() {
-    if (this.currentAcronymIndex < this.acronyms.length - 1) {
+    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    if (this.currentAcronymIndex < list.length - 1) {
       this.currentAcronymIndex++;
-      this.renderAcronymFlashcard();
+    } else {
+      this.currentAcronymIndex = 0; // Loop back
     }
+    this.renderAcronymFlashcard();
   }
 
   prevFlashcard() {
+    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
     if (this.currentAcronymIndex > 0) {
       this.currentAcronymIndex--;
-      this.renderAcronymFlashcard();
+    } else {
+      this.currentAcronymIndex = list.length - 1; // Loop back
     }
+    this.renderAcronymFlashcard();
   }
 
-  markAcronymMastered() {
+  toggleAcronymMastered() {
+    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    const item = list[this.currentAcronymIndex];
+    if (!item) return;
+
+    if (this.acronymsMastered.has(item.acronym)) {
+      this.acronymsMastered.delete(item.acronym);
+    } else {
+      this.acronymsMastered.add(item.acronym);
+    }
+
+    localStorage.setItem("secplus_acro_mastered", JSON.stringify([...this.acronymsMastered]));
     this.nextFlashcard();
   }
 
@@ -1584,20 +1694,23 @@ class SecPlusSimulator {
   }
 
   nextAcronymQuizQuestion() {
-    if (!this.acronyms || this.acronyms.length === 0) return;
-    const target = this.acronyms[Math.floor(Math.random() * this.acronyms.length)];
+    const pool = this.filteredAcronyms.length >= 4 ? this.filteredAcronyms : this.acronyms;
+    if (!pool || pool.length === 0) return;
 
-    const distractors = this.acronyms.filter(a => a.acronym !== target.acronym)
+    const target = pool[Math.floor(Math.random() * pool.length)];
+    const targetDef = target.expansion || target.definition;
+
+    const distractors = this.acronyms
+      .filter(a => a.acronym !== target.acronym)
       .sort(() => 0.5 - Math.random())
       .slice(0, 3)
-      .map(a => a.definition);
+      .map(a => a.expansion || a.definition);
 
-    const choices = [target.definition, ...distractors].sort(() => 0.5 - Math.random());
-
-    this.acroQuizCurrent = { target, choices };
+    const choices = [targetDef, ...distractors].sort(() => 0.5 - Math.random());
+    this.acroQuizCurrent = { target, choices, correct: targetDef };
 
     document.getElementById("acro-quiz-score").innerText = `Score: ${this.acroQuizScore.correct} / ${this.acroQuizScore.total}`;
-    document.getElementById("acro-quiz-term").innerHTML = `What does <strong>${target.acronym}</strong> stand for?`;
+    document.getElementById("acro-quiz-term").innerHTML = `What is the official term for <strong style="color:var(--accent-blue)">${target.acronym}</strong>?`;
 
     const container = document.getElementById("acro-quiz-options-container");
     container.innerHTML = "";
@@ -1608,15 +1721,16 @@ class SecPlusSimulator {
       const btn = document.createElement("button");
       btn.className = "option-item";
       btn.style.width = "100%";
+      btn.style.cursor = "pointer";
       btn.innerHTML = `<span style="font-weight: 600">${c}</span>`;
       btn.addEventListener("click", () => {
-        this.checkAcronymQuizChoice(c, target.definition, btn);
+        this.checkAcronymQuizChoice(c, targetDef, btn, target);
       });
       container.appendChild(btn);
     });
   }
 
-  checkAcronymQuizChoice(selected, correct, clickedBtn) {
+  checkAcronymQuizChoice(selected, correct, clickedBtn, target) {
     const isCorrect = selected === correct;
     this.acroQuizScore.total++;
     if (isCorrect) this.acroQuizScore.correct++;
@@ -1627,16 +1741,19 @@ class SecPlusSimulator {
       b.disabled = true;
       if (b.innerText.trim() === correct) {
         b.style.borderColor = "var(--accent-green)";
-        b.style.background = "rgba(16, 185, 129, 0.2)";
+        b.style.backgroundColor = "rgba(16, 185, 129, 0.15)";
       } else if (b === clickedBtn && !isCorrect) {
         b.style.borderColor = "var(--accent-red)";
-        b.style.background = "rgba(239, 68, 68, 0.2)";
+        b.style.backgroundColor = "rgba(239, 68, 68, 0.15)";
       }
     });
 
     const fb = document.getElementById("acro-quiz-feedback");
     fb.className = `quiz-feedback-box ${isCorrect ? 'correct' : 'incorrect'}`;
-    fb.innerText = isCorrect ? "✓ Correct Definition!" : `✗ Incorrect! Correct: ${correct}`;
+    const expText = target.explanation ? `<br><small style="margin-top:6px; display:block; font-weight:normal; color:var(--text-secondary)">💡 ${target.explanation}</small>` : '';
+    fb.innerHTML = isCorrect
+      ? `<strong>✓ Correct!</strong> ${target.acronym} = ${correct}${expText}`
+      : `<strong>✗ Incorrect!</strong> ${target.acronym} = <strong>${correct}</strong>${expText}`;
     fb.classList.remove("hidden");
 
     document.getElementById("acro-quiz-next-btn").classList.remove("hidden");
@@ -1648,14 +1765,33 @@ class SecPlusSimulator {
     tbody.innerHTML = "";
 
     const q = query.toLowerCase().trim();
-    const filtered = this.acronyms.filter(a => a.acronym.toLowerCase().includes(q) || a.definition.toLowerCase().includes(q));
+    let pool = this.filteredAcronyms.length > 0 && this.currentAcronymDomainFilter !== "all"
+      ? this.filteredAcronyms
+      : this.acronyms;
 
-    filtered.slice(0, 150).forEach(a => {
+    let filtered = pool;
+    if (q) {
+      filtered = pool.filter(a =>
+        a.acronym.toLowerCase().includes(q) ||
+        (a.expansion && a.expansion.toLowerCase().includes(q)) ||
+        (a.definition && a.definition.toLowerCase().includes(q)) ||
+        (a.explanation && a.explanation.toLowerCase().includes(q)) ||
+        (a.exam_tip && a.exam_tip.toLowerCase().includes(q))
+      );
+    }
+
+    filtered.forEach(a => {
       const tr = document.createElement("tr");
+      const isMastered = this.acronymsMastered.has(a.acronym);
       tr.innerHTML = `
-        <td style="font-weight: 800; color: var(--accent-cyan); font-family: var(--font-mono)">${a.acronym}</td>
-        <td>${a.definition}</td>
-        <td><span class="domain-badge d${a.domain || 1}">D${a.domain || 1}.0</span></td>
+        <td class="acro-col-term">${a.acronym} ${isMastered ? '<span style="color:#10b981" title="Mastered">✓</span>' : ''}</td>
+        <td class="acro-col-name">${a.expansion || a.definition}</td>
+        <td>
+          <span class="domain-badge d${a.domain || 1}">D${a.domain || 1}.0</span>
+          <div style="font-size:0.7rem; color:var(--text-muted); margin-top:4px">${a.category || 'General'}</div>
+        </td>
+        <td class="acro-col-desc">${a.explanation || ''}</td>
+        <td><div class="acro-col-cue">${a.exam_tip || ''}</div></td>
       `;
       tbody.appendChild(tr);
     });
@@ -1665,7 +1801,14 @@ class SecPlusSimulator {
     if (!document.getElementById("acro-table-view").classList.contains("hidden")) {
       this.renderAcronymTable(query);
     } else {
-      const idx = this.acronyms.findIndex(a => a.acronym.toLowerCase().includes(query.toLowerCase()));
+      const q = query.toLowerCase().trim();
+      if (!q) return;
+      const pool = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+      const idx = pool.findIndex(a =>
+        a.acronym.toLowerCase().includes(q) ||
+        (a.expansion && a.expansion.toLowerCase().includes(q)) ||
+        (a.definition && a.definition.toLowerCase().includes(q))
+      );
       if (idx !== -1) {
         this.currentAcronymIndex = idx;
         this.renderAcronymFlashcard();
