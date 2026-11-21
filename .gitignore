@@ -1,0 +1,23 @@
+# Local PDF archives (Proprietary / Copyrighted commercial materials)
+.local_archive_pdfs/
+*.pdf
+
+# Python & Environment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local logs & scratch files
+*.log
+.system_generated/

@@ -1,0 +1,1582 @@
+[
+  {
+    "acronym": "SY0-701",
+    "definition": "exam. Candidates are encouraged to review the complete list and",
+    "domain": 1
+  },
+  {
+    "acronym": "2FA",
+    "definition": "Two-factor Authentication",
+    "domain": 1
+  },
+  {
+    "acronym": "3DES",
+    "definition": "Triple Data Encryption Standard",
+    "domain": 1
+  },
+  {
+    "acronym": "AAA",
+    "definition": "Authentication, Authorization, and Accounting",
+    "domain": 1
+  },
+  {
+    "acronym": "ACL",
+    "definition": "Access Control List",
+    "domain": 1
+  },
+  {
+    "acronym": "AES",
+    "definition": "Advanced Encryption Standard",
+    "domain": 1
+  },
+  {
+    "acronym": "AES-256",
+    "definition": "Advanced Encryption Standards 256-bit",
+    "domain": 1
+  },
+  {
+    "acronym": "AH",
+    "definition": "Authentication Header",
+    "domain": 1
+  },
+  {
+    "acronym": "AI",
+    "definition": "Artificial Intelligence",
+    "domain": 1
+  },
+  {
+    "acronym": "AIS",
+    "definition": "Automated Indicator Sharing",
+    "domain": 1
+  },
+  {
+    "acronym": "ALE",
+    "definition": "Annualized Loss Expectancy",
+    "domain": 1
+  },
+  {
+    "acronym": "AP",
+    "definition": "Access Point",
+    "domain": 1
+  },
+  {
+    "acronym": "API",
+    "definition": "Application Programming Interface",
+    "domain": 1
+  },
+  {
+    "acronym": "APT",
+    "definition": "Advanced Persistent Threat",
+    "domain": 2
+  },
+  {
+    "acronym": "ARO",
+    "definition": "Annualized Rate of Occurrence",
+    "domain": 1
+  },
+  {
+    "acronym": "ARP",
+    "definition": "Address Resolution Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "ASLR",
+    "definition": "Address Space Layout Randomization",
+    "domain": 1
+  },
+  {
+    "acronym": "AUP",
+    "definition": "Acceptable Use Policy",
+    "domain": 5
+  },
+  {
+    "acronym": "AV",
+    "definition": "Antivirus",
+    "domain": 1
+  },
+  {
+    "acronym": "BASH",
+    "definition": "Bourne Again Shell",
+    "domain": 1
+  },
+  {
+    "acronym": "BCP",
+    "definition": "Business Continuity Planning",
+    "domain": 1
+  },
+  {
+    "acronym": "BGP",
+    "definition": "Border Gateway Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "BIA",
+    "definition": "Business Impact Analysis",
+    "domain": 1
+  },
+  {
+    "acronym": "BIOS",
+    "definition": "Basic Input/Output System",
+    "domain": 1
+  },
+  {
+    "acronym": "BPA",
+    "definition": "Business Partners Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "BPDU",
+    "definition": "Bridge Protocol Data Unit",
+    "domain": 1
+  },
+  {
+    "acronym": "BYOD",
+    "definition": "Bring Your Own Device",
+    "domain": 1
+  },
+  {
+    "acronym": "CA",
+    "definition": "Certificate Authority",
+    "domain": 1
+  },
+  {
+    "acronym": "CAPTCHA",
+    "definition": "Completely Automated Public Turing Test to Tell Computers and Humans Apart",
+    "domain": 1
+  },
+  {
+    "acronym": "CAR",
+    "definition": "Corrective Action Report",
+    "domain": 1
+  },
+  {
+    "acronym": "CASB",
+    "definition": "Cloud Access Security Broker",
+    "domain": 3
+  },
+  {
+    "acronym": "CBC",
+    "definition": "Cipher Block Chaining",
+    "domain": 1
+  },
+  {
+    "acronym": "CCMP",
+    "definition": "Counter Mode/CBC-MAC Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "CCTV",
+    "definition": "Closed-circuit Television",
+    "domain": 1
+  },
+  {
+    "acronym": "CERT",
+    "definition": "Computer Emergency Response Team",
+    "domain": 1
+  },
+  {
+    "acronym": "CFB",
+    "definition": "Cipher Feedback",
+    "domain": 1
+  },
+  {
+    "acronym": "CHAP",
+    "definition": "Challenge Handshake Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "CIA",
+    "definition": "Confidentiality, Integrity, Availability",
+    "domain": 1
+  },
+  {
+    "acronym": "CIO",
+    "definition": "Chief Information Officer",
+    "domain": 1
+  },
+  {
+    "acronym": "CIRT",
+    "definition": "Computer Incident Response Team",
+    "domain": 4
+  },
+  {
+    "acronym": "CMS",
+    "definition": "Content Management System",
+    "domain": 1
+  },
+  {
+    "acronym": "COBO",
+    "definition": "Corporate-owned, Business-only",
+    "domain": 1
+  },
+  {
+    "acronym": "COOP",
+    "definition": "Continuity of Operation Planning",
+    "domain": 1
+  },
+  {
+    "acronym": "COPE",
+    "definition": "Corporate Owned, Personally Enabled",
+    "domain": 1
+  },
+  {
+    "acronym": "CP",
+    "definition": "Contingency Planning",
+    "domain": 1
+  },
+  {
+    "acronym": "CRC",
+    "definition": "Cyclical Redundancy Check",
+    "domain": 1
+  },
+  {
+    "acronym": "CRL",
+    "definition": "Certificate Revocation List",
+    "domain": 1
+  },
+  {
+    "acronym": "CSO",
+    "definition": "Chief Security Officer",
+    "domain": 1
+  },
+  {
+    "acronym": "CSP",
+    "definition": "Cloud Service Provider",
+    "domain": 3
+  },
+  {
+    "acronym": "CSR",
+    "definition": "Certificate Signing Request",
+    "domain": 1
+  },
+  {
+    "acronym": "CSRF",
+    "definition": "Cross-site Request Forgery",
+    "domain": 1
+  },
+  {
+    "acronym": "CSU",
+    "definition": "Channel Service Unit",
+    "domain": 1
+  },
+  {
+    "acronym": "CTM",
+    "definition": "Counter Mode",
+    "domain": 1
+  },
+  {
+    "acronym": "CTO",
+    "definition": "Chief Technology Officer",
+    "domain": 4
+  },
+  {
+    "acronym": "CVE",
+    "definition": "Common Vulnerability Enumeration",
+    "domain": 2
+  },
+  {
+    "acronym": "CVSS",
+    "definition": "Common Vulnerability Scoring System",
+    "domain": 2
+  },
+  {
+    "acronym": "CYOD",
+    "definition": "Choose Your Own Device",
+    "domain": 1
+  },
+  {
+    "acronym": "DAC",
+    "definition": "Discretionary Access Control",
+    "domain": 1
+  },
+  {
+    "acronym": "DBA",
+    "definition": "Database Administrator",
+    "domain": 1
+  },
+  {
+    "acronym": "DEP",
+    "definition": "Data Execution Prevention",
+    "domain": 1
+  },
+  {
+    "acronym": "DES",
+    "definition": "Digital Encryption Standard",
+    "domain": 1
+  },
+  {
+    "acronym": "DHCP",
+    "definition": "Dynamic Host Configuration Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "DHE",
+    "definition": "Diffie-Hellman Ephemeral",
+    "domain": 1
+  },
+  {
+    "acronym": "DKIM",
+    "definition": "DomainKeys Identified Mail",
+    "domain": 1
+  },
+  {
+    "acronym": "DLL",
+    "definition": "Dynamic Link Library",
+    "domain": 1
+  },
+  {
+    "acronym": "DLP",
+    "definition": "Data Loss Prevention",
+    "domain": 1
+  },
+  {
+    "acronym": "DMARC",
+    "definition": "Domain Message Authentication Reporting and Conformance",
+    "domain": 1
+  },
+  {
+    "acronym": "DNAT",
+    "definition": "Destination Network Address Translation",
+    "domain": 3
+  },
+  {
+    "acronym": "DNS",
+    "definition": "Domain Name System",
+    "domain": 1
+  },
+  {
+    "acronym": "DNSSEC",
+    "definition": "Domain Name System Security Extensions",
+    "domain": 1
+  },
+  {
+    "acronym": "DPO",
+    "definition": "Data Privacy Officer",
+    "domain": 5
+  },
+  {
+    "acronym": "DRP",
+    "definition": "Disaster Recovery Plan",
+    "domain": 1
+  },
+  {
+    "acronym": "DSA",
+    "definition": "Digital Signature Algorithm",
+    "domain": 1
+  },
+  {
+    "acronym": "DSL",
+    "definition": "Digital Subscriber Line",
+    "domain": 1
+  },
+  {
+    "acronym": "EAP",
+    "definition": "Extensible Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "ECB",
+    "definition": "Electronic Code Book",
+    "domain": 1
+  },
+  {
+    "acronym": "ECC",
+    "definition": "Elliptic Curve Cryptography",
+    "domain": 1
+  },
+  {
+    "acronym": "ECDHE",
+    "definition": "Elliptic Curve Diffie-Hellman Ephemeral",
+    "domain": 1
+  },
+  {
+    "acronym": "ECDSA",
+    "definition": "Elliptic Curve Digital Signature Algorithm",
+    "domain": 1
+  },
+  {
+    "acronym": "EDR",
+    "definition": "Endpoint Detection and Response",
+    "domain": 1
+  },
+  {
+    "acronym": "EFS",
+    "definition": "Encrypted File System",
+    "domain": 1
+  },
+  {
+    "acronym": "ERP",
+    "definition": "Enterprise Resource Planning",
+    "domain": 1
+  },
+  {
+    "acronym": "ESN",
+    "definition": "Electronic Serial Number",
+    "domain": 1
+  },
+  {
+    "acronym": "ESP",
+    "definition": "Encapsulated Security Payload",
+    "domain": 1
+  },
+  {
+    "acronym": "EULA",
+    "definition": "End User License Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "FACL",
+    "definition": "File System Access Control List",
+    "domain": 1
+  },
+  {
+    "acronym": "FDE",
+    "definition": "Full Disk Encryption",
+    "domain": 1
+  },
+  {
+    "acronym": "FIM",
+    "definition": "File Integrity Management",
+    "domain": 1
+  },
+  {
+    "acronym": "FPGA",
+    "definition": "Field Programmable Gate Array",
+    "domain": 1
+  },
+  {
+    "acronym": "FRR",
+    "definition": "False Rejection Rate",
+    "domain": 1
+  },
+  {
+    "acronym": "FTP",
+    "definition": "File Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "FTPS",
+    "definition": "Secured File Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "GCM",
+    "definition": "Galois Counter Mode",
+    "domain": 1
+  },
+  {
+    "acronym": "GDPR",
+    "definition": "General Data Protection Regulation",
+    "domain": 1
+  },
+  {
+    "acronym": "GPG",
+    "definition": "Gnu Privacy Guard",
+    "domain": 5
+  },
+  {
+    "acronym": "GPO",
+    "definition": "Group Policy Object",
+    "domain": 5
+  },
+  {
+    "acronym": "GPS",
+    "definition": "Global Positioning System",
+    "domain": 1
+  },
+  {
+    "acronym": "GPU",
+    "definition": "Graphics Processing Unit",
+    "domain": 1
+  },
+  {
+    "acronym": "GRE",
+    "definition": "Generic Routing Encapsulation",
+    "domain": 1
+  },
+  {
+    "acronym": "HA",
+    "definition": "High Availability",
+    "domain": 1
+  },
+  {
+    "acronym": "HDD",
+    "definition": "Hard Disk Drive",
+    "domain": 1
+  },
+  {
+    "acronym": "HIDS",
+    "definition": "Host-based Intrusion Detection System",
+    "domain": 1
+  },
+  {
+    "acronym": "HIPS",
+    "definition": "Host-based Intrusion Prevention System",
+    "domain": 1
+  },
+  {
+    "acronym": "HMAC",
+    "definition": "Hashed Message Authentication Code",
+    "domain": 1
+  },
+  {
+    "acronym": "HOTP",
+    "definition": "HMAC-based One-time Password",
+    "domain": 1
+  },
+  {
+    "acronym": "HSM",
+    "definition": "Hardware Security Module",
+    "domain": 1
+  },
+  {
+    "acronym": "HTML",
+    "definition": "Hypertext Markup Language",
+    "domain": 1
+  },
+  {
+    "acronym": "HTTP",
+    "definition": "Hypertext Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "HTTPS",
+    "definition": "Hypertext Transfer Protocol Secure",
+    "domain": 1
+  },
+  {
+    "acronym": "HVAC",
+    "definition": "Heating, Ventilation Air Conditioning",
+    "domain": 1
+  },
+  {
+    "acronym": "IAM",
+    "definition": "Identity and Access Management",
+    "domain": 1
+  },
+  {
+    "acronym": "ICMP",
+    "definition": "Internet Control Message Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "ICS",
+    "definition": "Industrial Control Systems",
+    "domain": 1
+  },
+  {
+    "acronym": "IDEA",
+    "definition": "International Data Encryption Algorithm",
+    "domain": 1
+  },
+  {
+    "acronym": "IDF",
+    "definition": "Intermediate Distribution Frame",
+    "domain": 1
+  },
+  {
+    "acronym": "IDS",
+    "definition": "Intrusion Detection System",
+    "domain": 1
+  },
+  {
+    "acronym": "IEEE",
+    "definition": "Institute of Electrical and Electronics Engineers",
+    "domain": 1
+  },
+  {
+    "acronym": "IKE",
+    "definition": "Internet Key Exchange",
+    "domain": 1
+  },
+  {
+    "acronym": "IM",
+    "definition": "Instant Messaging",
+    "domain": 1
+  },
+  {
+    "acronym": "IMAP",
+    "definition": "Internet Message Access Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "IP",
+    "definition": "Internet Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "IPS",
+    "definition": "Intrusion Prevention System",
+    "domain": 1
+  },
+  {
+    "acronym": "IR",
+    "definition": "Incident Response",
+    "domain": 4
+  },
+  {
+    "acronym": "IRC",
+    "definition": "Internet Relay Chat",
+    "domain": 1
+  },
+  {
+    "acronym": "IRP",
+    "definition": "Incident Response Plan",
+    "domain": 4
+  },
+  {
+    "acronym": "ISO",
+    "definition": "International Standards Organization",
+    "domain": 1
+  },
+  {
+    "acronym": "ISP",
+    "definition": "Internet Service Provider",
+    "domain": 1
+  },
+  {
+    "acronym": "ISSO",
+    "definition": "Information Systems Security Officer",
+    "domain": 1
+  },
+  {
+    "acronym": "IV",
+    "definition": "Initialization Vector",
+    "domain": 1
+  },
+  {
+    "acronym": "KDC",
+    "definition": "Key Distribution Center",
+    "domain": 1
+  },
+  {
+    "acronym": "KEK",
+    "definition": "Key Encryption Key",
+    "domain": 1
+  },
+  {
+    "acronym": "L2TP",
+    "definition": "Layer 2 Tunneling Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "LAN",
+    "definition": "Local Area Network",
+    "domain": 3
+  },
+  {
+    "acronym": "LDAP",
+    "definition": "Lightweight Directory Access Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "LEAP",
+    "definition": "Lightweight Extensible Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "MAC",
+    "definition": "Mandatory Access Control",
+    "domain": 1
+  },
+  {
+    "acronym": "MAN",
+    "definition": "Metropolitan Area Network",
+    "domain": 3
+  },
+  {
+    "acronym": "MBR",
+    "definition": "Master Boot Record",
+    "domain": 1
+  },
+  {
+    "acronym": "MD5",
+    "definition": "Message Digest 5",
+    "domain": 1
+  },
+  {
+    "acronym": "MDF",
+    "definition": "Main Distribution Frame",
+    "domain": 1
+  },
+  {
+    "acronym": "MDM",
+    "definition": "Mobile Device Management",
+    "domain": 1
+  },
+  {
+    "acronym": "MFA",
+    "definition": "Multifactor Authentication",
+    "domain": 1
+  },
+  {
+    "acronym": "MFD",
+    "definition": "Multifunction Device",
+    "domain": 1
+  },
+  {
+    "acronym": "MFP",
+    "definition": "Multifunction Printer",
+    "domain": 1
+  },
+  {
+    "acronym": "ML",
+    "definition": "Machine Learning",
+    "domain": 1
+  },
+  {
+    "acronym": "MMS",
+    "definition": "Multimedia Message Service",
+    "domain": 1
+  },
+  {
+    "acronym": "MOA",
+    "definition": "Memorandum of Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "MOU",
+    "definition": "Memorandum of Understanding",
+    "domain": 1
+  },
+  {
+    "acronym": "MPLS",
+    "definition": "Multi-protocol Label Switching",
+    "domain": 1
+  },
+  {
+    "acronym": "MSA",
+    "definition": "Master Service Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "MSCHAP",
+    "definition": "Microsoft Challenge Handshake Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "MSP",
+    "definition": "Managed Service Provider",
+    "domain": 1
+  },
+  {
+    "acronym": "MSSP",
+    "definition": "Managed Security Service Provider",
+    "domain": 1
+  },
+  {
+    "acronym": "MTBF",
+    "definition": "Mean Time Between Failures",
+    "domain": 1
+  },
+  {
+    "acronym": "MTTF",
+    "definition": "Mean Time to Failure",
+    "domain": 1
+  },
+  {
+    "acronym": "MTTR",
+    "definition": "Mean Time to Recover",
+    "domain": 1
+  },
+  {
+    "acronym": "MTU",
+    "definition": "Maximum Transmission Unit",
+    "domain": 1
+  },
+  {
+    "acronym": "MX",
+    "definition": "Mail Exchange",
+    "domain": 1
+  },
+  {
+    "acronym": "NAC",
+    "definition": "Network Access Control",
+    "domain": 3
+  },
+  {
+    "acronym": "NAT",
+    "definition": "Network Address Translation",
+    "domain": 3
+  },
+  {
+    "acronym": "NDA",
+    "definition": "Non-disclosure Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "NFC",
+    "definition": "Near Field Communication",
+    "domain": 1
+  },
+  {
+    "acronym": "NGFW",
+    "definition": "Next-generation Firewall",
+    "domain": 3
+  },
+  {
+    "acronym": "NIDS",
+    "definition": "Network-based Intrusion Detection System",
+    "domain": 3
+  },
+  {
+    "acronym": "NIPS",
+    "definition": "Network-based Intrusion Prevention System",
+    "domain": 3
+  },
+  {
+    "acronym": "NIST",
+    "definition": "National Institute of Standards & Technology",
+    "domain": 4
+  },
+  {
+    "acronym": "NTFS",
+    "definition": "New Technology File System",
+    "domain": 4
+  },
+  {
+    "acronym": "NTLM",
+    "definition": "New Technology LAN Manager",
+    "domain": 4
+  },
+  {
+    "acronym": "NTP",
+    "definition": "Network Time Protocol",
+    "domain": 3
+  },
+  {
+    "acronym": "OAUTH",
+    "definition": "Open Authorization",
+    "domain": 1
+  },
+  {
+    "acronym": "OCSP",
+    "definition": "Online Certificate Status Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "OID",
+    "definition": "Object Identifier",
+    "domain": 1
+  },
+  {
+    "acronym": "OS",
+    "definition": "Operating System",
+    "domain": 1
+  },
+  {
+    "acronym": "OSINT",
+    "definition": "Open-source Intelligence",
+    "domain": 1
+  },
+  {
+    "acronym": "OSPF",
+    "definition": "Open Shortest Path First",
+    "domain": 1
+  },
+  {
+    "acronym": "OT",
+    "definition": "Operational Technology",
+    "domain": 4
+  },
+  {
+    "acronym": "OTA",
+    "definition": "Over the Air",
+    "domain": 1
+  },
+  {
+    "acronym": "OVAL",
+    "definition": "Open Vulnerability Assessment Language",
+    "domain": 2
+  },
+  {
+    "acronym": "OWASP",
+    "definition": "Open Worldwide Application Security Project",
+    "domain": 1
+  },
+  {
+    "acronym": "P12",
+    "definition": "PKCS #12",
+    "domain": 1
+  },
+  {
+    "acronym": "P2P",
+    "definition": "Peer to Peer",
+    "domain": 1
+  },
+  {
+    "acronym": "PAC",
+    "definition": "Proxy Auto Configuration",
+    "domain": 3
+  },
+  {
+    "acronym": "PAM",
+    "definition": "Privileged Access Management",
+    "domain": 1
+  },
+  {
+    "acronym": "PAP",
+    "definition": "Password Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "PAT",
+    "definition": "Port Address Translation",
+    "domain": 5
+  },
+  {
+    "acronym": "PBKDF2",
+    "definition": "Password-based Key Derivation Function 2",
+    "domain": 1
+  },
+  {
+    "acronym": "PBX",
+    "definition": "Private Branch Exchange",
+    "domain": 1
+  },
+  {
+    "acronym": "PCAP",
+    "definition": "Packet Capture",
+    "domain": 1
+  },
+  {
+    "acronym": "PCI",
+    "definition": "DSS Payment Card Industry Data Security Standard",
+    "domain": 1
+  },
+  {
+    "acronym": "PDU",
+    "definition": "Power Distribution Unit",
+    "domain": 1
+  },
+  {
+    "acronym": "PEAP",
+    "definition": "Protected Extensible Authentication Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "PED",
+    "definition": "Personal Electronic Device",
+    "domain": 1
+  },
+  {
+    "acronym": "PEM",
+    "definition": "Privacy Enhanced Mail",
+    "domain": 5
+  },
+  {
+    "acronym": "PFS",
+    "definition": "Perfect Forward Secrecy",
+    "domain": 1
+  },
+  {
+    "acronym": "PGP",
+    "definition": "Pretty Good Privacy",
+    "domain": 5
+  },
+  {
+    "acronym": "PHI",
+    "definition": "Personal Health Information",
+    "domain": 1
+  },
+  {
+    "acronym": "PII",
+    "definition": "Personally Identifiable Information",
+    "domain": 1
+  },
+  {
+    "acronym": "PIV",
+    "definition": "Personal Identity Verification",
+    "domain": 1
+  },
+  {
+    "acronym": "PKCS",
+    "definition": "Public Key Cryptography Standards",
+    "domain": 1
+  },
+  {
+    "acronym": "PKI",
+    "definition": "Public Key Infrastructure",
+    "domain": 1
+  },
+  {
+    "acronym": "POP",
+    "definition": "Post Office Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "POTS",
+    "definition": "Plain Old Telephone Service",
+    "domain": 1
+  },
+  {
+    "acronym": "PPP",
+    "definition": "Point-to-Point Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "PPTP",
+    "definition": "Point-to-Point Tunneling Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "PSK",
+    "definition": "Pre-shared Key",
+    "domain": 1
+  },
+  {
+    "acronym": "PTZ",
+    "definition": "Pan-tilt-zoom",
+    "domain": 1
+  },
+  {
+    "acronym": "PUP",
+    "definition": "Potentially Unwanted Program",
+    "domain": 1
+  },
+  {
+    "acronym": "RA",
+    "definition": "Recovery Agent",
+    "domain": 1
+  },
+  {
+    "acronym": "RACE",
+    "definition": "Research and Development in Advanced Communications Technologies in Europe",
+    "domain": 4
+  },
+  {
+    "acronym": "RAD",
+    "definition": "Rapid Application Development",
+    "domain": 1
+  },
+  {
+    "acronym": "RADIUS",
+    "definition": "Remote Authentication Dial-in User Service",
+    "domain": 1
+  },
+  {
+    "acronym": "RAID",
+    "definition": "Redundant Array of Inexpensive Disks",
+    "domain": 1
+  },
+  {
+    "acronym": "RAS",
+    "definition": "Remote Access Server",
+    "domain": 1
+  },
+  {
+    "acronym": "RAT",
+    "definition": "Remote Access Trojan",
+    "domain": 1
+  },
+  {
+    "acronym": "RBAC",
+    "definition": "Role-based Access Control",
+    "domain": 1
+  },
+  {
+    "acronym": "RC4",
+    "definition": "Rivest Cipher version 4",
+    "domain": 1
+  },
+  {
+    "acronym": "RDP",
+    "definition": "Remote Desktop Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "RFID",
+    "definition": "Radio Frequency Identifier",
+    "domain": 1
+  },
+  {
+    "acronym": "RIPEMD",
+    "definition": "RACE Integrity Primitives Evaluation Message Digest",
+    "domain": 1
+  },
+  {
+    "acronym": "ROI",
+    "definition": "Return on Investment",
+    "domain": 1
+  },
+  {
+    "acronym": "RPO",
+    "definition": "Recovery Point Objective",
+    "domain": 1
+  },
+  {
+    "acronym": "RSA",
+    "definition": "Rivest, Shamir, & Adleman",
+    "domain": 1
+  },
+  {
+    "acronym": "RTBH",
+    "definition": "Remotely Triggered Black Hole",
+    "domain": 1
+  },
+  {
+    "acronym": "RTO",
+    "definition": "Recovery Time Objective",
+    "domain": 1
+  },
+  {
+    "acronym": "RTOS",
+    "definition": "Real-time Operating System",
+    "domain": 1
+  },
+  {
+    "acronym": "RTP",
+    "definition": "Real-time Transport Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "S/MIME",
+    "definition": "Secure/Multipurpose Internet Mail Extensions",
+    "domain": 1
+  },
+  {
+    "acronym": "SAE",
+    "definition": "Simultaneous Authentication of Equals",
+    "domain": 1
+  },
+  {
+    "acronym": "SAML",
+    "definition": "Security Assertions Markup Language",
+    "domain": 1
+  },
+  {
+    "acronym": "SAN",
+    "definition": "Storage Area Network",
+    "domain": 3
+  },
+  {
+    "acronym": "SASE",
+    "definition": "Secure Access Service Edge",
+    "domain": 1
+  },
+  {
+    "acronym": "SCADA",
+    "definition": "Supervisory Control and Data Acquisition",
+    "domain": 1
+  },
+  {
+    "acronym": "SCAP",
+    "definition": "Security Content Automation Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SCEP",
+    "definition": "Simple Certificate Enrollment Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SD-WAN",
+    "definition": "Software-defined Wide Area Network",
+    "domain": 3
+  },
+  {
+    "acronym": "SDK",
+    "definition": "Software Development Kit",
+    "domain": 1
+  },
+  {
+    "acronym": "SDLC",
+    "definition": "Software Development Lifecycle",
+    "domain": 1
+  },
+  {
+    "acronym": "SDLM",
+    "definition": "Software Development Lifecycle Methodology",
+    "domain": 4
+  },
+  {
+    "acronym": "SDN",
+    "definition": "Software-defined Networking",
+    "domain": 3
+  },
+  {
+    "acronym": "SE",
+    "definition": "Linux Security-enhanced Linux",
+    "domain": 1
+  },
+  {
+    "acronym": "SED",
+    "definition": "Self-encrypting Drives",
+    "domain": 1
+  },
+  {
+    "acronym": "SEH",
+    "definition": "Structured Exception Handler",
+    "domain": 1
+  },
+  {
+    "acronym": "SFTP",
+    "definition": "Secured File Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SHA",
+    "definition": "Secure Hashing Algorithm",
+    "domain": 1
+  },
+  {
+    "acronym": "SHTTP",
+    "definition": "Secure Hypertext Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SIEM",
+    "definition": "Security Information and Event Management",
+    "domain": 1
+  },
+  {
+    "acronym": "SIM",
+    "definition": "Subscriber Identity Module",
+    "domain": 1
+  },
+  {
+    "acronym": "SLA",
+    "definition": "Service-level Agreement",
+    "domain": 1
+  },
+  {
+    "acronym": "SLE",
+    "definition": "Single Loss Expectancy",
+    "domain": 1
+  },
+  {
+    "acronym": "SMB",
+    "definition": "Server Message Block",
+    "domain": 1
+  },
+  {
+    "acronym": "SMS",
+    "definition": "Short Message Service",
+    "domain": 1
+  },
+  {
+    "acronym": "SMTP",
+    "definition": "Simple Mail Transfer Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SMTPS",
+    "definition": "Simple Mail Transfer Protocol Secure",
+    "domain": 1
+  },
+  {
+    "acronym": "SNMP",
+    "definition": "Simple Network Management Protocol",
+    "domain": 3
+  },
+  {
+    "acronym": "SOAP",
+    "definition": "Simple Object Access Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SOAR",
+    "definition": "Security Orchestration, Automation, Response",
+    "domain": 1
+  },
+  {
+    "acronym": "SOC",
+    "definition": "Security Operations Center",
+    "domain": 1
+  },
+  {
+    "acronym": "SOW",
+    "definition": "Statement of Work",
+    "domain": 1
+  },
+  {
+    "acronym": "SPF",
+    "definition": "Sender Policy Framework",
+    "domain": 5
+  },
+  {
+    "acronym": "SPIM",
+    "definition": "Spam over Internet Messaging",
+    "domain": 1
+  },
+  {
+    "acronym": "SQL",
+    "definition": "Structured Query Language",
+    "domain": 1
+  },
+  {
+    "acronym": "SRTP",
+    "definition": "Secure Real-Time Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "SSD",
+    "definition": "Solid State Drive",
+    "domain": 1
+  },
+  {
+    "acronym": "SSH",
+    "definition": "Secure Shell",
+    "domain": 1
+  },
+  {
+    "acronym": "SSL",
+    "definition": "Secure Sockets Layer",
+    "domain": 1
+  },
+  {
+    "acronym": "SSO",
+    "definition": "Single Sign-on",
+    "domain": 1
+  },
+  {
+    "acronym": "STIX",
+    "definition": "Structured Threat Information eXchange",
+    "domain": 2
+  },
+  {
+    "acronym": "SWG",
+    "definition": "Secure Web Gateway",
+    "domain": 1
+  },
+  {
+    "acronym": "TACACS+",
+    "definition": "Terminal Access Controller Access Control System",
+    "domain": 1
+  },
+  {
+    "acronym": "TAXII",
+    "definition": "Trusted Automated eXchange of Indicator Information",
+    "domain": 1
+  },
+  {
+    "acronym": "TCP/IP",
+    "definition": "Transmission Control Protocol/Internet Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "TGT",
+    "definition": "Ticket Granting Ticket",
+    "domain": 1
+  },
+  {
+    "acronym": "TKIP",
+    "definition": "Temporal Key Integrity Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "TLS",
+    "definition": "Transport Layer Security",
+    "domain": 1
+  },
+  {
+    "acronym": "TOC",
+    "definition": "Time-of-check",
+    "domain": 1
+  },
+  {
+    "acronym": "TOTP",
+    "definition": "Time-based One-time Password",
+    "domain": 1
+  },
+  {
+    "acronym": "TOU",
+    "definition": "Time-of-use",
+    "domain": 1
+  },
+  {
+    "acronym": "TPM",
+    "definition": "Trusted Platform Module",
+    "domain": 1
+  },
+  {
+    "acronym": "TTP",
+    "definition": "Tactics, Techniques, and Procedures",
+    "domain": 1
+  },
+  {
+    "acronym": "TSIG",
+    "definition": "Transaction Signature",
+    "domain": 1
+  },
+  {
+    "acronym": "UAT",
+    "definition": "User Acceptance Testing",
+    "domain": 1
+  },
+  {
+    "acronym": "UAV",
+    "definition": "Unmanned Aerial Vehicle",
+    "domain": 1
+  },
+  {
+    "acronym": "UBA",
+    "definition": "User Behavior Analytics",
+    "domain": 1
+  },
+  {
+    "acronym": "UDP",
+    "definition": "User Datagram Protocol",
+    "domain": 1
+  },
+  {
+    "acronym": "UEFI",
+    "definition": "Unified Extensible Firmware Interface",
+    "domain": 1
+  },
+  {
+    "acronym": "UEM",
+    "definition": "Unified Endpoint Management",
+    "domain": 1
+  },
+  {
+    "acronym": "UPS",
+    "definition": "Uninterruptible Power Supply",
+    "domain": 1
+  },
+  {
+    "acronym": "URI",
+    "definition": "Uniform Resource Identifier",
+    "domain": 1
+  },
+  {
+    "acronym": "URL",
+    "definition": "Universal Resource Locator",
+    "domain": 1
+  },
+  {
+    "acronym": "USB",
+    "definition": "Universal Serial Bus",
+    "domain": 1
+  },
+  {
+    "acronym": "UTM",
+    "definition": "Unified Threat Management",
+    "domain": 2
+  },
+  {
+    "acronym": "UTP",
+    "definition": "Unshielded Twisted Pair",
+    "domain": 1
+  },
+  {
+    "acronym": "VBA",
+    "definition": "Visual Basic",
+    "domain": 1
+  },
+  {
+    "acronym": "VDE",
+    "definition": "Virtual Desktop Environment",
+    "domain": 1
+  },
+  {
+    "acronym": "VDI",
+    "definition": "Virtual Desktop Infrastructure",
+    "domain": 1
+  },
+  {
+    "acronym": "VLAN",
+    "definition": "Virtual Local Area Network",
+    "domain": 3
+  },
+  {
+    "acronym": "VLSM",
+    "definition": "Variable Length Subnet Masking",
+    "domain": 1
+  },
+  {
+    "acronym": "VM",
+    "definition": "Virtual Machine",
+    "domain": 1
+  },
+  {
+    "acronym": "VPC",
+    "definition": "Virtual Private Cloud",
+    "domain": 3
+  },
+  {
+    "acronym": "VPN",
+    "definition": "Virtual Private Network",
+    "domain": 3
+  },
+  {
+    "acronym": "VTC",
+    "definition": "Video Teleconferencing",
+    "domain": 1
+  },
+  {
+    "acronym": "WAF",
+    "definition": "Web Application Firewall",
+    "domain": 3
+  },
+  {
+    "acronym": "WAP",
+    "definition": "Wireless Access Point",
+    "domain": 1
+  },
+  {
+    "acronym": "WEP",
+    "definition": "Wired Equivalent Privacy",
+    "domain": 5
+  },
+  {
+    "acronym": "WIDS",
+    "definition": "Wireless Intrusion Detection System",
+    "domain": 1
+  },
+  {
+    "acronym": "WIPS",
+    "definition": "Wireless Intrusion Prevention System",
+    "domain": 1
+  },
+  {
+    "acronym": "WO",
+    "definition": "Work Order",
+    "domain": 1
+  },
+  {
+    "acronym": "WPA",
+    "definition": "Wi-Fi Protected Access",
+    "domain": 1
+  },
+  {
+    "acronym": "WPS",
+    "definition": "Wi-Fi Protected Setup",
+    "domain": 1
+  },
+  {
+    "acronym": "WTLS",
+    "definition": "Wireless TLS",
+    "domain": 1
+  },
+  {
+    "acronym": "XDR",
+    "definition": "Extended Detection and Response",
+    "domain": 1
+  },
+  {
+    "acronym": "XML",
+    "definition": "Extensible Markup Language",
+    "domain": 1
+  },
+  {
+    "acronym": "XOR",
+    "definition": "Exclusive Or",
+    "domain": 1
+  },
+  {
+    "acronym": "XSRF",
+    "definition": "Cross-site Request Forgery",
+    "domain": 1
+  },
+  {
+    "acronym": "XSS",
+    "definition": "Cross-site Scripting",
+    "domain": 1
+  },
+  {
+    "acronym": "SPARE",
+    "definition": "PARTS/HARDWARE",
+    "domain": 1
+  }
+]
