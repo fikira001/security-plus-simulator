@@ -22,11 +22,12 @@ class SecPlusSimulator {
     this.stats = this.loadStats();
     this.missedQuestions = this.loadMissedQuestions();
 
-    // Acronym state
+    // Acronym state & deck separation
     this.acronyms = [];
     this.filteredAcronyms = [];
+    this.currentDeckMode = localStorage.getItem("secplus_acro_deck_mode") || "learning"; // 'learning', 'mastered', 'all'
+    this.currentAcronymDomainFilter = localStorage.getItem("secplus_acro_domain_filter") || "all";
     this.currentAcronymIndex = 0;
-    this.currentAcronymDomainFilter = "all";
     this.acronymsMastered = new Set(JSON.parse(localStorage.getItem("secplus_acro_mastered") || "[]"));
     this.acroQuizCurrent = null;
     this.acroQuizScore = { correct: 0, total: 0 };
@@ -58,7 +59,7 @@ class SecPlusSimulator {
       const res = await fetch("data/questions_db.json");
       this.db = await res.json();
       this.acronyms = this.db.acronyms || [];
-      this.filteredAcronyms = [...this.acronyms];
+      this.applySavedAcronymState();
       console.log(`Database loaded: ${this.db.all_mcqs.length} MCQs, ${this.db.pbqs.length} PBQs, ${this.acronyms.length} Acronyms`);
     } catch (err) {
       console.error("Failed to load question database:", err);
@@ -264,6 +265,8 @@ class SecPlusSimulator {
       this.renderMissedBank();
     } else if (tabId === "notes") {
       this.selectDomainNotes(this.currentDomainNote);
+    } else if (tabId === "acronyms") {
+      this.renderAcronymFlashcard();
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -1534,6 +1537,85 @@ class SecPlusSimulator {
   }
 
   // --- ACRONYM BLITZ & TERM EXPLAINER SUITE ---
+  applySavedAcronymState() {
+    this.currentDeckMode = localStorage.getItem("secplus_acro_deck_mode") || "learning";
+    this.currentAcronymDomainFilter = localStorage.getItem("secplus_acro_domain_filter") || "all";
+
+    // Set active deck button
+    document.querySelectorAll(".deck-tab-btn").forEach(b => {
+      b.classList.toggle("active", b.id === `deck-tab-${this.currentDeckMode}`);
+    });
+
+    // Set active domain filter pill
+    document.querySelectorAll(".acro-filter-pill").forEach(p => {
+      p.classList.toggle("active", p.dataset.acroDom === this.currentAcronymDomainFilter.toString());
+    });
+
+    this.updateAcronymDeckList();
+
+    // Restore saved card term if available
+    const savedTerm = localStorage.getItem("secplus_acro_resume_term");
+    if (savedTerm && this.filteredAcronyms.length > 0) {
+      const foundIdx = this.filteredAcronyms.findIndex(a => a.acronym === savedTerm);
+      this.currentAcronymIndex = foundIdx !== -1 ? foundIdx : 0;
+    } else {
+      this.currentAcronymIndex = 0;
+    }
+  }
+
+  setAcronymDeck(mode) {
+    this.currentDeckMode = mode;
+    localStorage.setItem("secplus_acro_deck_mode", mode);
+
+    document.querySelectorAll(".deck-tab-btn").forEach(b => {
+      b.classList.toggle("active", b.id === `deck-tab-${mode}`);
+    });
+
+    this.updateAcronymDeckList();
+    this.currentAcronymIndex = 0;
+    this.renderAcronymFlashcard();
+
+    if (!document.getElementById("acro-table-view").classList.contains("hidden")) {
+      this.renderAcronymTable();
+    }
+  }
+
+  updateAcronymDeckList() {
+    if (!this.acronyms || this.acronyms.length === 0) return;
+
+    // Base deck filter
+    let baseList = [];
+    if (this.currentDeckMode === "learning") {
+      baseList = this.acronyms.filter(a => !this.acronymsMastered.has(a.acronym));
+    } else if (this.currentDeckMode === "mastered") {
+      baseList = this.acronyms.filter(a => this.acronymsMastered.has(a.acronym));
+    } else {
+      baseList = [...this.acronyms];
+    }
+
+    // Domain filter
+    if (this.currentAcronymDomainFilter === "all") {
+      this.filteredAcronyms = baseList;
+    } else {
+      const dNum = parseInt(this.currentAcronymDomainFilter);
+      this.filteredAcronyms = baseList.filter(a => a.domain === dNum);
+    }
+
+    // Update Deck Pill Counts
+    const unmasteredTotal = this.acronyms.filter(a => !this.acronymsMastered.has(a.acronym)).length;
+    const masteredTotal = this.acronymsMastered.size;
+    const allTotal = this.acronyms.length;
+
+    const learnCountEl = document.getElementById("learning-deck-count");
+    if (learnCountEl) learnCountEl.innerText = unmasteredTotal;
+
+    const masterCountEl = document.getElementById("mastered-deck-count");
+    if (masterCountEl) masterCountEl.innerText = masteredTotal;
+
+    const allCountEl = document.getElementById("all-deck-count");
+    if (allCountEl) allCountEl.innerText = allTotal;
+  }
+
   setAcronymMode(mode) {
     document.querySelectorAll(".mode-toggle-group .pill-btn").forEach(b => b.classList.remove("active"));
     const activeBtn = document.getElementById(`acro-${mode}-mode-btn`);
@@ -1554,17 +1636,13 @@ class SecPlusSimulator {
 
   filterAcronymsByDomain(domain) {
     this.currentAcronymDomainFilter = domain;
+    localStorage.setItem("secplus_acro_domain_filter", domain);
+
     document.querySelectorAll(".acro-filter-pill").forEach(p => {
       p.classList.toggle("active", p.dataset.acroDom === domain.toString());
     });
 
-    if (domain === "all") {
-      this.filteredAcronyms = [...this.acronyms];
-    } else {
-      const dNum = parseInt(domain);
-      this.filteredAcronyms = this.acronyms.filter(a => a.domain === dNum);
-    }
-
+    this.updateAcronymDeckList();
     this.currentAcronymIndex = 0;
     this.renderAcronymFlashcard();
 
@@ -1574,8 +1652,71 @@ class SecPlusSimulator {
   }
 
   renderAcronymFlashcard() {
-    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
-    if (!list || list.length === 0) return;
+    const list = this.filteredAcronyms;
+    const mainCard = document.getElementById("main-flashcard");
+    const controls = document.querySelector(".flashcard-controls");
+    const emptyState = document.getElementById("fc-empty-state");
+    const counterText = document.getElementById("fc-counter-text");
+    const progressFill = document.getElementById("fc-progress-fill");
+    const statusBadge = document.getElementById("fc-deck-status");
+    const resumeText = document.getElementById("acro-resume-text");
+
+    if (statusBadge) {
+      statusBadge.innerText = `${this.acronymsMastered.size} Mastered`;
+    }
+
+    // Handle Empty Decks (e.g. all mastered, or 0 mastered cards)
+    if (!list || list.length === 0) {
+      if (mainCard) mainCard.classList.add("hidden");
+      if (controls) controls.classList.add("hidden");
+      if (emptyState) {
+        emptyState.classList.remove("hidden");
+        const titleEl = document.getElementById("fc-empty-title");
+        const descEl = document.getElementById("fc-empty-desc");
+        const iconEl = document.getElementById("fc-empty-icon");
+        const actionsEl = document.getElementById("fc-empty-actions");
+
+        if (this.currentDeckMode === "learning") {
+          if (iconEl) iconEl.innerText = "🏆";
+          if (titleEl) titleEl.innerText = "All Active Cards Mastered!";
+          if (descEl) descEl.innerText = "Incredible work! You have marked all acronyms in this selection as mastered. Review them in the Mastered Deck or reset to practice again.";
+          if (actionsEl) {
+            actionsEl.innerHTML = `
+              <button class="btn-primary-action" onclick="app.setAcronymDeck('mastered')">Review Mastered Deck</button>
+              <button class="btn-secondary-action" onclick="app.resetCurrentDeckMastery()">Reset Mastery for this Deck</button>
+            `;
+          }
+        } else if (this.currentDeckMode === "mastered") {
+          if (iconEl) iconEl.innerText = "🎯";
+          if (titleEl) titleEl.innerText = "No Mastered Cards Yet";
+          if (descEl) descEl.innerText = "Cards you mark as mastered in the Learning Deck will be placed here for later revision.";
+          if (actionsEl) {
+            actionsEl.innerHTML = `
+              <button class="btn-primary-action" onclick="app.setAcronymDeck('learning')">Go to Learning Deck</button>
+            `;
+          }
+        } else {
+          if (iconEl) iconEl.innerText = "🔍";
+          if (titleEl) titleEl.innerText = "No Acronyms Found";
+          if (descEl) descEl.innerText = "No acronyms match the active domain filter.";
+          if (actionsEl) {
+            actionsEl.innerHTML = `
+              <button class="btn-primary-action" onclick="app.filterAcronymsByDomain('all')">Show All Domains</button>
+            `;
+          }
+        }
+      }
+
+      if (counterText) counterText.innerText = `0 Cards`;
+      if (progressFill) progressFill.style.width = this.currentDeckMode === 'learning' ? '100%' : '0%';
+      if (resumeText) resumeText.innerText = "Deck Complete";
+      return;
+    }
+
+    // Active cards available
+    if (mainCard) mainCard.classList.remove("hidden");
+    if (controls) controls.classList.remove("hidden");
+    if (emptyState) emptyState.classList.add("hidden");
 
     if (this.currentAcronymIndex >= list.length) {
       this.currentAcronymIndex = 0;
@@ -1618,34 +1759,40 @@ class SecPlusSimulator {
     }
 
     // COUNTER & PROGRESS
-    const counterText = document.getElementById("fc-counter-text");
     if (counterText) {
       counterText.innerText = `Card ${this.currentAcronymIndex + 1} of ${list.length}`;
     }
 
     const pct = Math.round(((this.currentAcronymIndex + 1) / list.length) * 100);
-    const progressFill = document.getElementById("fc-progress-fill");
     if (progressFill) progressFill.style.width = `${pct}%`;
 
-    const statusBadge = document.getElementById("fc-deck-status");
-    if (statusBadge) {
-      statusBadge.innerText = `${this.acronymsMastered.size} Mastered`;
+    // RESUME NOTIFICATION / TRACKING
+    localStorage.setItem("secplus_acro_resume_term", item.acronym);
+    if (resumeText) {
+      const modeLabel = this.currentDeckMode === 'learning' ? 'Learning' : (this.currentDeckMode === 'mastered' ? 'Mastered' : 'All');
+      resumeText.innerText = `Resumed at Card ${this.currentAcronymIndex + 1}: ${item.acronym} (${modeLabel})`;
     }
 
-    // MASTERED BUTTON SYNC
+    // MASTERED / UNMASTER BUTTON STATE
     const isMastered = this.acronymsMastered.has(item.acronym);
     const masterBtn = document.getElementById("fc-master-btn");
     const masterText = document.getElementById("fc-master-btn-text");
-    if (masterBtn) {
-      masterBtn.classList.toggle("is-mastered", isMastered);
-    }
-    if (masterText) {
-      masterText.innerText = isMastered ? "Mastered ✓" : "Mark Mastered";
+
+    if (masterBtn && masterText) {
+      masterBtn.classList.remove("is-mastered", "unmaster");
+      if (this.currentDeckMode === "mastered") {
+        masterBtn.classList.add("unmaster");
+        masterText.innerText = "Unmaster (Move to Learning)";
+      } else if (this.currentDeckMode === "learning") {
+        masterText.innerText = "Mark Mastered";
+      } else {
+        masterBtn.classList.toggle("is-mastered", isMastered);
+        masterText.innerText = isMastered ? "Mastered ✓ (Click to Unmaster)" : "Mark Mastered";
+      }
     }
 
     // Unflip card
-    const cardEl = document.getElementById("main-flashcard");
-    if (cardEl) cardEl.classList.remove("flipped");
+    if (mainCard) mainCard.classList.remove("flipped");
   }
 
   flipFlashcard() {
@@ -1654,7 +1801,8 @@ class SecPlusSimulator {
   }
 
   nextFlashcard() {
-    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    const list = this.filteredAcronyms;
+    if (!list || list.length === 0) return;
     if (this.currentAcronymIndex < list.length - 1) {
       this.currentAcronymIndex++;
     } else {
@@ -1664,7 +1812,8 @@ class SecPlusSimulator {
   }
 
   prevFlashcard() {
-    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    const list = this.filteredAcronyms;
+    if (!list || list.length === 0) return;
     if (this.currentAcronymIndex > 0) {
       this.currentAcronymIndex--;
     } else {
@@ -1674,18 +1823,52 @@ class SecPlusSimulator {
   }
 
   toggleAcronymMastered() {
-    const list = this.filteredAcronyms.length > 0 ? this.filteredAcronyms : this.acronyms;
+    const list = this.filteredAcronyms;
+    if (!list || list.length === 0) return;
+
     const item = list[this.currentAcronymIndex];
     if (!item) return;
 
-    if (this.acronymsMastered.has(item.acronym)) {
+    const wasMastered = this.acronymsMastered.has(item.acronym);
+    if (wasMastered) {
       this.acronymsMastered.delete(item.acronym);
     } else {
       this.acronymsMastered.add(item.acronym);
     }
 
     localStorage.setItem("secplus_acro_mastered", JSON.stringify([...this.acronymsMastered]));
-    this.nextFlashcard();
+
+    // Update deck list because membership changed
+    this.updateAcronymDeckList();
+
+    if (this.currentDeckMode === "learning" || this.currentDeckMode === "mastered") {
+      // The card has been moved out of this active deck!
+      if (this.currentAcronymIndex >= this.filteredAcronyms.length) {
+        this.currentAcronymIndex = Math.max(0, this.filteredAcronyms.length - 1);
+      }
+      this.renderAcronymFlashcard();
+    } else {
+      // All cards deck: stay or advance
+      this.nextFlashcard();
+    }
+  }
+
+  resetCurrentDeckMastery() {
+    if (!confirm("Are you sure you want to reset mastery for these acronyms? They will all return to your Learning Deck.")) return;
+
+    if (this.currentAcronymDomainFilter === "all") {
+      this.acronymsMastered.clear();
+    } else {
+      const dNum = parseInt(this.currentAcronymDomainFilter);
+      this.acronyms.filter(a => a.domain === dNum).forEach(a => {
+        this.acronymsMastered.delete(a.acronym);
+      });
+    }
+
+    localStorage.setItem("secplus_acro_mastered", JSON.stringify([...this.acronymsMastered]));
+    this.updateAcronymDeckList();
+    this.currentAcronymIndex = 0;
+    this.renderAcronymFlashcard();
   }
 
   startAcronymQuiz() {
@@ -1828,10 +2011,13 @@ class SecPlusSimulator {
     if (tabKey === "ports") {
       const ports = this.db.cheatsheet.ports || [];
       area.innerHTML = `
-        <h3 style="margin-bottom: 14px">Core Security+ Ports & Protocols (TCP/UDP)</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Core Security+ Ports & Protocols (TCP/UDP)</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Essential for network firewall rules, PBQs, and traffic triage</span>
+        </div>
         <table class="styled-table">
           <thead>
-            <tr><th>Port</th><th>Protocol</th><th>Description & Security Context</th></tr>
+            <tr><th style="width:14%">Port</th><th style="width:20%">Protocol</th><th>Description & Security Context</th></tr>
           </thead>
           <tbody>
             ${ports.map(p => `
@@ -1847,12 +2033,192 @@ class SecPlusSimulator {
     } else if (tabKey === "crypto") {
       const crypto = this.db.cheatsheet.crypto || [];
       area.innerHTML = `
-        <h3 style="margin-bottom: 14px">High-Yield Cryptography & Ciphers</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">High-Yield Cryptography & Ciphers</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Symmetric vs Asymmetric, Hashing, Key Stretching & Quantum-Resistant</span>
+        </div>
         <div style="display: flex; flex-direction: column; gap: 14px">
           ${crypto.map(c => `
             <div style="background: var(--bg-card); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color)">
               <h4 style="color: var(--accent-blue); margin-bottom: 6px">${c.term}</h4>
-              <p style="font-size: 0.95rem; color: var(--text-secondary)">${c.details}</p>
+              <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6">${c.details}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (tabKey === "volatility") {
+      const vol = this.db.cheatsheet.volatility || [];
+      const principles = this.db.cheatsheet.forensics_principles || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">RFC 3227 Order of Volatility & Digital Forensics</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Must be collected in order from most volatile to least volatile</span>
+        </div>
+
+        <table class="styled-table" style="margin-bottom: 24px">
+          <thead>
+            <tr>
+              <th style="width: 14%">Volatility Rank</th>
+              <th style="width: 32%">Evidence Target</th>
+              <th style="width: 18%">Typical Lifespan</th>
+              <th>Forensic Acquisition Context</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${vol.map((v, i) => `
+              <tr>
+                <td>
+                  <span class="cs-rank-pill ${i === 0 ? 'high' : (i <= 2 ? 'med' : 'low')}">${v.rank}</span>
+                </td>
+                <td style="font-weight: 700; color: var(--text-primary)">${v.target}</td>
+                <td style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-secondary)">${v.lifespan}</td>
+                <td style="font-size: 0.88rem; color: var(--text-secondary)">${v.context}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <h4 style="margin: 20px 0 12px; color: var(--text-primary)">Core Digital Forensics Principles & Standards</h4>
+        <div class="cs-card-grid">
+          ${principles.map(p => `
+            <div class="cs-feature-card">
+              <div class="cs-card-header">
+                <h5 class="cs-card-title">${p.concept}</h5>
+                <span class="cs-tag">${p.rule}</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0">${p.details}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (tabKey === "attacks") {
+      const attacks = this.db.cheatsheet.attacks || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Network & Application Attacks, Indicators & Mitigations</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Common attack vectors, diagnostic signs, and primary defensive controls</span>
+        </div>
+
+        <div class="cs-card-grid">
+          ${attacks.map(a => `
+            <div class="cs-feature-card">
+              <div class="cs-card-header">
+                <h5 class="cs-card-title">${a.attack}</h5>
+                <span class="cs-tag">${a.vector}</span>
+              </div>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin: 0">${a.mechanism}</p>
+              
+              <div class="cs-row-label">Key Indicators / Log Evidence:</div>
+              <div class="cs-indicator-box">${a.indicators}</div>
+
+              <div class="cs-row-label">Primary Exam Mitigation:</div>
+              <div class="cs-mitigation-box">${a.mitigation}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (tabKey === "iam") {
+      const iam = this.db.cheatsheet.iam || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Authentication, IAM & Federation Standards</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">RADIUS vs TACACS+, Kerberos, SAML, OAuth 2.0, OIDC, SCIM, and Access Control Models</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 14px">
+          ${iam.map(item => `
+            <div style="background: var(--bg-card); padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color)">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px">
+                <h4 style="color: var(--accent-blue); margin: 0">${item.protocol}</h4>
+                <span class="cs-tag">${item.category}</span>
+              </div>
+              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin: 0">${item.summary}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (tabKey === "cloud") {
+      const cloud = this.db.cheatsheet.cloud || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Cloud Architecture, SASE & Zero Trust Principles</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Shared Responsibility, CASB, SASE, NIST SP 800-207 Zero Trust, and Cloud Storage</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px">
+          ${cloud.map(c => `
+            <div style="background: var(--bg-card); padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 8px">
+              <h4 style="color: var(--accent-cyan); margin: 0">${c.pillar}</h4>
+              <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin: 0">${c.details}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } else if (tabKey === "compliance") {
+      const compliance = this.db.cheatsheet.compliance || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Governance, Regulatory Compliance & Security Frameworks</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">GDPR, HIPAA, PCI-DSS, SOX, NIST CSF 2.0, NIST SP 800-53, ISO 27001/2, SOC 2, and CIS Controls</span>
+        </div>
+
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th style="width: 24%">Standard / Regulation</th>
+              <th style="width: 22%">Applicability & Scope</th>
+              <th>Core Mandates & Security Requirements</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${compliance.map(c => `
+              <tr>
+                <td style="font-weight: 700; color: var(--accent-purple)">${c.standard}</td>
+                <td><span class="cs-tag" style="background:rgba(168, 85, 247, 0.1); color:var(--accent-purple); border-color:rgba(168,85,247,0.3)">${c.scope}</span></td>
+                <td style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55">${c.mandates}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    } else if (tabKey === "resilience") {
+      const raid = this.db.cheatsheet.resilience || [];
+      const dr = this.db.cheatsheet.dr_metrics || [];
+      area.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">RAID Configurations, High Availability & Disaster Recovery Metrics</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Fault tolerance levels, RTO, RPO, MTBF, MTTR, and recovery site tiers</span>
+        </div>
+
+        <table class="styled-table" style="margin-bottom: 24px">
+          <thead>
+            <tr>
+              <th style="width: 16%">RAID Level</th>
+              <th style="width: 12%">Min Disks</th>
+              <th style="width: 18%">Fault Tolerance</th>
+              <th style="width: 14%">Usable Cap.</th>
+              <th>Optimal Exam Use Case</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${raid.map(r => `
+              <tr>
+                <td style="font-weight: 700; font-family: var(--font-mono); color: var(--accent-green)">${r.level}</td>
+                <td>${r.min_disks}</td>
+                <td><span class="cs-tag" style="background:rgba(16, 185, 129, 0.1); color:#059669; border-color:rgba(16,185,129,0.3)">${r.fault_tolerance}</span></td>
+                <td style="font-family: var(--font-mono); font-weight: 600">${r.usable_capacity}</td>
+                <td style="font-size: 0.88rem; color: var(--text-secondary)">${r.best_use}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+
+        <h4 style="margin: 20px 0 12px; color: var(--text-primary)">Disaster Recovery & Continuity Metrics</h4>
+        <div class="cs-card-grid">
+          ${dr.map(d => `
+            <div class="cs-feature-card">
+              <h5 class="cs-card-title" style="color: var(--accent-blue)">${d.metric}</h5>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0">${d.definition}</p>
             </div>
           `).join('')}
         </div>
@@ -1860,7 +2226,10 @@ class SecPlusSimulator {
     } else if (tabKey === "ir") {
       const ir = this.db.cheatsheet.incident_response || [];
       area.innerHTML = `
-        <h3 style="margin-bottom: 14px">NIST / CompTIA Incident Response Lifecycle (PICERL)</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">NIST / CompTIA Incident Response Lifecycle (PICERL)</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned</span>
+        </div>
         <div style="display: flex; flex-direction: column; gap: 12px">
           ${ir.map(step => `
             <div style="background: var(--bg-card); padding: 16px; border-radius: var(--radius-sm); border-left: 4px solid var(--accent-purple)">
@@ -1873,7 +2242,10 @@ class SecPlusSimulator {
     } else if (tabKey === "risk") {
       const formulas = this.db.cheatsheet.risk_formulas || [];
       area.innerHTML = `
-        <h3 style="margin-bottom: 14px">Quantitative Risk Management Formulas</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">Quantitative Risk Management Formulas</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">ALE, SLE, ARO, MTBF, MTTR calculations</span>
+        </div>
         <table class="styled-table">
           <thead>
             <tr><th>Formula / Acronym</th><th>Concept</th><th>Definition</th></tr>
@@ -1892,7 +2264,10 @@ class SecPlusSimulator {
     } else if (tabKey === "controls") {
       const controls = this.db.cheatsheet.security_controls || [];
       area.innerHTML = `
-        <h3 style="margin-bottom: 14px">CompTIA Security Control Categories & Types</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px">
+          <h3 style="margin:0">CompTIA Security Control Categories & Types</h3>
+          <span style="font-size:0.8rem; color:var(--text-muted)">Technical, Managerial, Operational, Physical & Functional Controls</span>
+        </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px">
           ${controls.map(c => `
             <div style="background: var(--bg-card); padding: 18px; border-radius: var(--radius-sm); border: 1px solid var(--border-color)">

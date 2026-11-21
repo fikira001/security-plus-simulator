@@ -740,6 +740,32 @@
               </div>
             </div>
 
+            <!-- Separated Decks: Learning (Unmastered) vs Mastered (Review Later) vs All Acronyms -->
+            <div class="acro-deck-selector-strip">
+              <div class="acro-deck-selector">
+                <button class="deck-tab-btn active" id="deck-tab-learning" onclick="app.setAcronymDeck('learning')">
+                  <span class="deck-icon">🎯</span>
+                  <span class="deck-title">Learning Deck</span>
+                  <span class="deck-pill-count" id="learning-deck-count">314</span>
+                </button>
+                <button class="deck-tab-btn" id="deck-tab-mastered" onclick="app.setAcronymDeck('mastered')">
+                  <span class="deck-icon">🏆</span>
+                  <span class="deck-title">Mastered Deck</span>
+                  <span class="deck-pill-count" id="mastered-deck-count">0</span>
+                </button>
+                <button class="deck-tab-btn" id="deck-tab-all" onclick="app.setAcronymDeck('all')">
+                  <span class="deck-icon">📚</span>
+                  <span class="deck-title">All Cards</span>
+                  <span class="deck-pill-count" id="all-deck-count">314</span>
+                </button>
+              </div>
+
+              <div class="acro-resume-indicator" id="acro-resume-indicator" title="Your study session is automatically saved in your browser">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                <span id="acro-resume-text">Pick up where you left</span>
+              </div>
+            </div>
+
             <!-- Domain Filter Badges -->
             <div class="acro-domain-filter-pills">
               <button class="acro-filter-pill active" data-acro-dom="all" onclick="app.filterAcronymsByDomain('all')">All Domains (314)</button>
@@ -761,6 +787,17 @@
                     <div class="fc-progress-fill" id="fc-progress-fill" style="width: 1%"></div>
                   </div>
                   <div class="fc-deck-status" id="fc-deck-status">0 Mastered</div>
+                </div>
+
+                <!-- Empty State (When learning deck completed or mastered deck empty) -->
+                <div id="fc-empty-state" class="fc-empty-state-card hidden">
+                  <div class="fc-empty-icon" id="fc-empty-icon">🏆</div>
+                  <h3 class="fc-empty-title" id="fc-empty-title">All Deck Cards Mastered!</h3>
+                  <p class="fc-empty-desc" id="fc-empty-desc">You've mastered every acronym in this active deck. You can review your mastered cards anytime or reset them to practice again.</p>
+                  <div class="fc-empty-actions" id="fc-empty-actions">
+                    <button class="btn-primary-action" onclick="app.setAcronymDeck('mastered')">Review Mastered Deck</button>
+                    <button class="btn-secondary-action" onclick="app.resetCurrentDeckMastery()">Reset Mastery for this Deck</button>
+                  </div>
                 </div>
 
                 <!-- 3D Flippable Flashcard -->
@@ -896,14 +933,20 @@
           <div class="section-container">
             <div class="section-header">
               <div>
-                <h2 class="section-title">CompTIA Security+ Reference Sheets</h2>
-                <span class="section-sub">High-yield summaries of ports, crypto, incident response, risk formulas & controls</span>
+                <h2 class="section-title">CompTIA Security+ Reference & Quick Revision Sheets</h2>
+                <span class="section-sub">High-yield summaries of ports, cryptography, forensics volatility, network attacks, IAM federation, cloud SASE, regulations & risk formulas</span>
               </div>
             </div>
 
             <div class="cheatsheet-tabs">
               <button class="cs-tab-btn active" onclick="app.showCheatTab('ports')">Core Ports & Protocols</button>
               <button class="cs-tab-btn" onclick="app.showCheatTab('crypto')">Cryptography & Ciphers</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('volatility')">Order of Volatility & Forensics</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('attacks')">Network Attacks & Mitigations</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('iam')">IAM & Federation (SAML/OAuth/RADIUS)</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('cloud')">Cloud Security, SASE & Zero Trust</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('compliance')">Governance & Compliance Frameworks</button>
+              <button class="cs-tab-btn" onclick="app.showCheatTab('resilience')">RAID, High Availability & DR Metrics</button>
               <button class="cs-tab-btn" onclick="app.showCheatTab('ir')">Incident Response Steps (PICERL)</button>
               <button class="cs-tab-btn" onclick="app.showCheatTab('risk')">Risk Formulas (ALE, SLE, MTBF)</button>
               <button class="cs-tab-btn" onclick="app.showCheatTab('controls')">Security Controls Matrix</button>

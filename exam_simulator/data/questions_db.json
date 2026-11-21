@@ -39017,6 +39017,338 @@
         "category": "Physical",
         "desc": "Tangible real-world protection (Fences, bollards, mantrap vestibules, door locks, badge readers, generators)."
       }
+    ],
+    "volatility": [
+      {
+        "rank": "1 (Highest)",
+        "target": "CPU Registers & CPU Cache",
+        "lifespan": "Nanoseconds",
+        "context": "Lost immediately upon system power-off. Extremely volatile, requires specialized live-memory hardware probes to extract."
+      },
+      {
+        "rank": "2",
+        "target": "Routing Table, ARP Cache, Process Table, Kernel Statistics, RAM",
+        "lifespan": "Microseconds to Minutes",
+        "context": "Active system state. Live RAM capture (using WinPmem, LiME, or dumpit) preserves decrypted keys, open sockets, and unwritten malware."
+      },
+      {
+        "rank": "3",
+        "target": "Temporary File Systems & Swap / Paging Files",
+        "lifespan": "Minutes to Hours",
+        "context": "pagefile.sys, hiberfil.sys, /tmp directories containing cached application data, partial process fragments, and memory spills."
+      },
+      {
+        "rank": "4",
+        "target": "Disk Storage / Non-Volatile Media (HDD, SSD, NVMe, USB)",
+        "lifespan": "Days to Years",
+        "context": "Persistent file system data, master boot records, deleted file clusters, unallocated space, and slack space. Preserved via bit-stream imaging."
+      },
+      {
+        "rank": "5",
+        "target": "Remote Logging, SIEM & Network Traffic Data",
+        "lifespan": "Hours to Days",
+        "context": "Syslog servers, NetFlow/IPFIX, cloud audit trails (AWS CloudTrail), firewall state logs stored off-target. High survival rate during host wipe."
+      },
+      {
+        "rank": "6",
+        "target": "Physical Configuration & Network Cabling Topology",
+        "lifespan": "Semi-permanent",
+        "context": "Switch port patchings, physical console connections, physical rack positioning, and hardware serial provenance."
+      },
+      {
+        "rank": "7 (Lowest)",
+        "target": "Archival Media (Tapes, Optical Discs, Offline Cold Backups)",
+        "lifespan": "Years to Decades",
+        "context": "Immutable WORM drives, magnetic tapes, and offsite disaster recovery vaults. Least volatile, highest persistence."
+      }
+    ],
+    "forensics_principles": [
+      {
+        "concept": "Chain of Custody",
+        "rule": "Mandatory Legal Protocol",
+        "details": "A continuous chronological paper and digital audit trail proving who collected, handled, transferred, analyzed, and stored evidence. Ensures evidence is admissible in court without suspicion of tampering."
+      },
+      {
+        "concept": "Legal Hold / Preservation Notice",
+        "rule": "Litigation Preservation",
+        "details": "A formal directive issued by corporate legal counsel ordering the immediate suspension of standard record retention and automated data purging routines when litigation is reasonably anticipated."
+      },
+      {
+        "concept": "Write Blocker (Hardware / Software)",
+        "rule": "Evidence Integrity Defense",
+        "details": "A physical bridge or firmware filter placed between the forensic workstation and suspect media that intercepts and drops write commands, preventing any alteration of target sector data during bit-stream imaging."
+      },
+      {
+        "concept": "Bit-Stream Forensic Image",
+        "rule": "Raw Acquisition Standard",
+        "details": "An exact, bit-by-bit physical sector duplication of storage media (e.g., using dd, FTK Imager, or EnCase) capturing all active files, deleted files, unallocated clusters, and slack space."
+      },
+      {
+        "concept": "Cryptographic Hash Verification",
+        "rule": "Non-Repudiation Check",
+        "details": "Calculating SHA-256 or MD5 hashes of the original drive before acquisition and of the forensic image immediately after. Matching hashes legally confirm absolute integrity and zero evidence alteration."
+      },
+      {
+        "concept": "e-Discovery (Electronic Discovery)",
+        "rule": "EDRM Standard Lifecycle",
+        "details": "The standardized procedure of identifying, preserving, collecting, reviewing, and producing Electronically Stored Information (ESI) for civil or criminal legal proceedings."
+      }
+    ],
+    "attacks": [
+      {
+        "attack": "ARP Poisoning / Spoofing",
+        "vector": "Layer 2 Data Link",
+        "mechanism": "Attacker broadcasts gratuitous ARP replies associating their MAC address with the IP of the default gateway.",
+        "indicators": "Duplicate MAC alerts in switch logs, traffic redirected on-path, intermittent gateway latency.",
+        "mitigation": "Dynamic ARP Inspection (DAI) on managed switches, 802.1X port authentication, static ARP tables for critical servers."
+      },
+      {
+        "attack": "DNS Cache Poisoning / Spoofing",
+        "vector": "Application Layer (UDP 53)",
+        "mechanism": "Injecting fraudulent IP mappings into a recursive DNS resolver cache so client domain queries resolve to attacker servers.",
+        "indicators": "Users redirected to phishing clones despite typing genuine URLs, invalid SSL certificate warnings.",
+        "mitigation": "DNSSEC (Domain Name System Security Extensions) for cryptographic record signing, DNS-over-HTTPS (DoH), randomized transaction IDs."
+      },
+      {
+        "attack": "On-Path / Man-in-the-Middle (MITM)",
+        "vector": "Network / Transport / App",
+        "mechanism": "Attacker covertly intercepts, inspects, and modifies communications between two unsuspecting parties.",
+        "indicators": "Untrusted root CA certificate warnings, sudden SSL stripping (HTTPS downgrading to HTTP), latency anomalies.",
+        "mitigation": "TLS 1.3 with Perfect Forward Secrecy (PFS), Mutual TLS (mTLS) for microservices, Certificate Pinning, HSTS enforcement."
+      },
+      {
+        "attack": "SQL Injection (SQLi)",
+        "vector": "Web Application / Database",
+        "mechanism": "Unsanitized user input is concatenated into backend database queries, allowing arbitrary data exfiltration or deletion.",
+        "indicators": "Database error strings ('syntax error near...'), auth bypass via (' OR 1=1--), large data extraction dumps.",
+        "mitigation": "Parameterized Queries (Prepared Statements), input validation allowlisting, stored procedures, Object-Relational Mapping (ORM)."
+      },
+      {
+        "attack": "Cross-Site Scripting (XSS)",
+        "vector": "Client-Side Browser Execution",
+        "mechanism": "Injecting malicious JavaScript into web pages viewed by other users. Types: Stored (in DB), Reflected (in URL), DOM-based.",
+        "indicators": "Session cookie theft, unauthorized API requests on behalf of users, defaced web elements, rogue modal login boxes.",
+        "mitigation": "Context-aware output encoding (HTML, JS, CSS escaping), Content Security Policy (CSP) headers, HttpOnly cookie flags."
+      },
+      {
+        "attack": "Cross-Site Request Forgery (CSRF)",
+        "vector": "Client-Side Session Abuse",
+        "mechanism": "Tricking an authenticated victim browser into submitting unauthorized HTTP requests to an application where they are logged in.",
+        "indicators": "Unexpected state-changing actions (password changes, bank transfers) submitted without user knowledge.",
+        "mitigation": "Cryptographic Anti-CSRF Synchronizer Tokens, SameSite=Strict or SameSite=Lax cookie attribute, re-authentication challenges."
+      },
+      {
+        "attack": "Buffer Overflow",
+        "vector": "System Software / Memory",
+        "mechanism": "Writing data past allocated buffer boundaries, overwriting adjacent memory, frame pointers, or return instruction pointers.",
+        "indicators": "Segmentation faults, core dumps, unexpected service termination, arbitrary shellcode execution.",
+        "mitigation": "Address Space Layout Randomization (ASLR), Data Execution Prevention (DEP / NX bit), compiler stack canaries, memory-safe languages."
+      },
+      {
+        "attack": "Distributed Denial of Service (DDoS)",
+        "vector": "Network & Application (Layer 3/4/7)",
+        "mechanism": "Coordinated botnets overwhelm victim bandwidth or server compute resources with volumetric or application floods.",
+        "indicators": "Bandwidth saturation, 100% CPU utilization, 502/504 gateway timeouts, massive SYN or DNS amplification floods.",
+        "mitigation": "Cloud DDoS scrubbing networks (Cloudflare, AWS Shield), Anycast routing, upstream ISP BGP blackholing, rate limiting, WAF."
+      },
+      {
+        "attack": "Server-Side Request Forgery (SSRF)",
+        "vector": "Web Application / Cloud",
+        "mechanism": "Abusing server functionality to read or update internal resources, such as querying cloud metadata endpoints (169.254.169.254).",
+        "indicators": "Anomalous outbound HTTP requests originating from backend web servers to internal IP subnets.",
+        "mitigation": "Strict URL allowlists, disabling unused URL schemas, enforcing cloud metadata IMDSv2 (session tokens), egress firewalls."
+      },
+      {
+        "attack": "Pass-the-Hash & Kerberoasting",
+        "vector": "Active Directory / Identity",
+        "mechanism": "Pass-the-Hash reuses NTLM hashes directly; Kerberoasting requests Kerberos TGS service tickets offline to brute-force plaintext passwords.",
+        "indicators": "High volume of Kerberos TGS requests with RC4 encryption; sudden privilege escalation across lateral domain controllers.",
+        "mitigation": "Microsoft LAPS, Tiered Admin Model, Group Managed Service Accounts (gMSA), strong passwords (>25 chars), AES Kerberos encryption."
+      }
+    ],
+    "iam": [
+      {
+        "protocol": "RADIUS vs TACACS+",
+        "category": "AAA Protocols",
+        "summary": "RADIUS (UDP 1812/1813): Open standard, encrypts password ONLY, combines AuthN + AuthZ. TACACS+ (TCP 49): Cisco, encrypts full packet payload, separates AAA."
+      },
+      {
+        "protocol": "Kerberos (TCP/UDP 88)",
+        "category": "Domain Authentication",
+        "summary": "Active Directory standard. Uses Key Distribution Center (KDC), Authentication Server (AS), Ticket Granting Tickets (TGT), and Service Tickets. 5-minute clock skew prevents replay attacks."
+      },
+      {
+        "protocol": "802.1X & EAP Framework",
+        "category": "Port Access Control",
+        "summary": "Supplicant (Client) -> Authenticator (Switch/AP) -> Auth Server (RADIUS). EAP-TLS requires certs on BOTH client and server (highest security). PEAP requires server cert only."
+      },
+      {
+        "protocol": "SAML 2.0",
+        "category": "Enterprise SSO & Federation",
+        "summary": "XML-based framework communicating between Identity Provider (IdP) and Service Provider (SP). Dominates legacy enterprise web Single Sign-On."
+      },
+      {
+        "protocol": "OAuth 2.0",
+        "category": "API Authorization Framework",
+        "summary": "Delegation framework using JSON and HTTPS. Issues scoped Access Tokens and Refresh Tokens enabling third-party apps to access APIs without user passwords."
+      },
+      {
+        "protocol": "OpenID Connect (OIDC)",
+        "category": "Modern Identity & AuthN",
+        "summary": "Identity authentication layer built directly on top of OAuth 2.0. Issues signed JSON Web Tokens (JWT ID Tokens) containing authenticated user profile claims."
+      },
+      {
+        "protocol": "SCIM (System for Cross-domain Identity Management)",
+        "category": "Identity Lifecycle Management",
+        "summary": "Standardized REST/JSON protocol automating user provisioning and de-provisioning between HR systems, IdPs, and cloud SaaS applications."
+      },
+      {
+        "protocol": "ABAC (Attribute-Based Access Control)",
+        "category": "Access Control Models",
+        "summary": "Dynamic, fine-grained access decisions based on Subject (user), Resource (data), Action (read), and Environment (time, device posture, location). Backbone of Zero Trust."
+      },
+      {
+        "protocol": "DAC vs MAC vs RBAC",
+        "category": "Access Control Models",
+        "summary": "DAC: Data owner sets permissions (NTFS). MAC: Fixed security labels & clearances enforced by OS (Military, SELinux). RBAC: Access mapped to job role/function."
+      }
+    ],
+    "cloud": [
+      {
+        "pillar": "Shared Responsibility Model",
+        "details": "IaaS: CSP owns hardware/hypervisor; Customer owns OS, apps, data, IAM. PaaS: CSP owns OS/runtime; Customer owns apps, data. SaaS: CSP owns everything; Customer owns data and user access."
+      },
+      {
+        "pillar": "SASE (Secure Access Service Edge)",
+        "details": "Unifies SD-WAN networking with cloud-delivered security edge services: CASB, Firewall-as-a-Service (FWaaS), Secure Web Gateway (SWG), and Zero Trust Network Access (ZTNA)."
+      },
+      {
+        "pillar": "CASB (Cloud Access Security Broker)",
+        "details": "Policy enforcement layer between users and cloud services. API mode: Out-of-band audit, configuration compliance, retroactive scanning. Inline mode (Forward/Reverse Proxy): Real-time DLP and threat prevention."
+      },
+      {
+        "pillar": "Zero Trust Architecture (NIST SP 800-207)",
+        "details": "Tenet: 'Never trust, always verify'. Eliminates implicit trust based on network location. Policy Decision Point (PDP) evaluates posture; Policy Enforcement Point (PEP) gates session access."
+      },
+      {
+        "pillar": "Cloud Storage & IAM Hygiene",
+        "details": "Object storage (S3 buckets) misconfiguration is #1 data leak vector. Enforce block public access, KMS encryption at rest (SSE-KMS), versioning, and IAM role least-privilege policies."
+      },
+      {
+        "pillar": "Virtualization vs Container Security",
+        "details": "Type 1 Bare Metal (ESXi, Hyper-V) runs directly on hardware. Containers share host OS kernel: require vulnerability scanning of base images, read-only root filesystems, and unprivileged execution."
+      }
+    ],
+    "compliance": [
+      {
+        "standard": "GDPR (General Data Protection Regulation)",
+        "scope": "EU Resident Data",
+        "mandates": "72-hour breach notification to supervisory authorities, Right to Erasure ('Right to be Forgotten'), Data Protection Officer (DPO) requirement, fines up to 4% global turnover or €20M."
+      },
+      {
+        "standard": "HIPAA (Health Insurance Portability & Accountability Act)",
+        "scope": "US Healthcare PHI",
+        "mandates": "Protects Protected Health Information (PHI). Privacy Rule, Security Rule (Administrative, Physical, Technical safeguards), and Business Associate Agreements (BAAs)."
+      },
+      {
+        "standard": "PCI-DSS (Payment Card Industry Data Security Standard)",
+        "scope": "Cardholder Data (CHD)",
+        "mandates": "12 technical requirements for processing credit card data: PAN encryption in transit and rest, network segmentation, firewall maintenance, quarterly external scans by an ASV."
+      },
+      {
+        "standard": "SOX (Sarbanes-Oxley Act)",
+        "scope": "US Publicly Traded Companies",
+        "mandates": "Protects investors from corporate accounting fraud. Section 404 mandates rigorous internal IT controls over financial data systems and annual independent audits."
+      },
+      {
+        "standard": "NIST CSF 2.0 (Cybersecurity Framework)",
+        "scope": "Voluntary Critical Infrastructure",
+        "mandates": "Six core functions: Govern (GV), Identify (ID), Protect (PR), Detect (DE), Respond (RS), and Recover (RC). Provides strategic guidance for risk management."
+      },
+      {
+        "standard": "NIST SP 800-53",
+        "scope": "US Federal Systems / FISMA",
+        "mandates": "Comprehensive catalog of security and privacy controls organized into 20 control families (Access Control, Incident Response, Media Protection, System Defense)."
+      },
+      {
+        "standard": "ISO/IEC 27001 & 27002",
+        "scope": "International Standard",
+        "mandates": "ISO 27001 specifies requirements for establishing an Information Security Management System (ISMS); ISO 27002 provides the actionable code of practice for control implementation."
+      },
+      {
+        "standard": "SOC 2 (Type I vs Type II)",
+        "scope": "Service Organization Controls",
+        "mandates": "Evaluates 5 Trust Services Criteria (Security, Availability, Integrity, Confidentiality, Privacy). Type I: Report on design at a single point in time. Type II: Operational effectiveness tested over 6+ months."
+      },
+      {
+        "standard": "CIS Critical Security Controls (v8)",
+        "scope": "Prioritized Technical Baseline",
+        "mandates": "18 prioritized safeguard groups focusing on essential cyber hygiene: inventory of assets, access control management, continuous vulnerability management, and log monitoring."
+      }
+    ],
+    "resilience": [
+      {
+        "level": "RAID 0 (Striping)",
+        "min_disks": "2 Disks",
+        "fault_tolerance": "0 Disks (No redundancy)",
+        "performance": "High read/write speed",
+        "usable_capacity": "100%",
+        "best_use": "High-performance temporary scratch disks where data loss is inconsequential."
+      },
+      {
+        "level": "RAID 1 (Mirroring)",
+        "min_disks": "2 Disks",
+        "fault_tolerance": "1 Disk per pair",
+        "performance": "Good read speed, normal write",
+        "usable_capacity": "50%",
+        "best_use": "Operating system drives, critical single-server deployments requiring basic redundancy."
+      },
+      {
+        "level": "RAID 5 (Striping + Parity)",
+        "min_disks": "3 Disks",
+        "fault_tolerance": "1 Disk",
+        "performance": "Good read speed, write parity penalty",
+        "usable_capacity": "N - 1 Disks",
+        "best_use": "Standard file and application storage balancing capacity, speed, and cost efficiency."
+      },
+      {
+        "level": "RAID 6 (Dual Distributed Parity)",
+        "min_disks": "4 Disks",
+        "fault_tolerance": "2 Disks",
+        "performance": "Good read, slower write due to dual parity",
+        "usable_capacity": "N - 2 Disks",
+        "best_use": "High-capacity enterprise arrays where drive rebuild times carry elevated double-failure risk."
+      },
+      {
+        "level": "RAID 10 (Striped Mirrors 1+0)",
+        "min_disks": "4 Disks",
+        "fault_tolerance": "Up to 1 per mirrored pair",
+        "performance": "Highest read and write performance",
+        "usable_capacity": "50%",
+        "best_use": "High-transaction databases (I/O intensive) and mission-critical enterprise systems."
+      }
+    ],
+    "dr_metrics": [
+      {
+        "metric": "RTO (Recovery Time Objective)",
+        "definition": "Maximum acceptable duration of downtime before business processes must be restored to avoid catastrophic loss."
+      },
+      {
+        "metric": "RPO (Recovery Point Objective)",
+        "definition": "Maximum acceptable data loss measured in time between last backup and disaster (determines necessary backup frequency)."
+      },
+      {
+        "metric": "MTBF (Mean Time Between Failures)",
+        "definition": "Expected operational reliability lifespan of repairable components before failure occurs."
+      },
+      {
+        "metric": "MTTR (Mean Time to Repair)",
+        "definition": "Average time required to diagnose, repair, and return a failed component or service to active operation."
+      },
+      {
+        "metric": "Recovery Sites (Hot vs Warm vs Cold)",
+        "definition": "Hot Site: Real-time mirror, minutes failover, highest cost. Warm Site: Hardware installed, requires backup restore (hours). Cold Site: Building/power only, days/weeks, lowest cost."
+      }
     ]
   }
 }
