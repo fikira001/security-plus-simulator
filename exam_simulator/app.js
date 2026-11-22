@@ -306,7 +306,10 @@ class SecPlusSimulator {
         const dom = this.studyGuides[domKey];
         if (dom.objectives) {
           for (const obj of dom.objectives) {
-            if (obj.code.toLowerCase().includes(query) || obj.title.toLowerCase().includes(query)) {
+            const matchTitle = obj.code.toLowerCase().includes(query) || obj.title.toLowerCase().includes(query);
+            const matchOverview = obj.overview && obj.overview.toLowerCase().includes(query);
+            const matchSub = (obj.subtopics || []).some(s => s.title.toLowerCase().includes(query) || s.items.some(it => it.toLowerCase().includes(query)));
+            if (matchTitle || matchOverview || matchSub) {
               matches.notes.push({ domain: dom.domain, code: obj.code, title: obj.title });
               if (matches.notes.length >= 4) break;
             }
@@ -1459,20 +1462,50 @@ class SecPlusSimulator {
               <span class="noh-toggle">▼</span>
             </div>
             <div class="note-obj-content">
-              ${obj.sections.map(sec => {
+              ${obj.overview ? `<p class="note-overview">${obj.overview}</p>` : ''}
+
+              ${(obj.subtopics || []).map(sub => `
+                <div class="note-subtopic-block">
+                  <h4 class="note-subheading">${sub.title}</h4>
+                  <ol class="note-ordered-list">
+                    ${(sub.items || []).map(it => {
+                      const colonIdx = it.indexOf(':');
+                      if (colonIdx !== -1) {
+                        const term = it.substring(0, colonIdx);
+                        const desc = it.substring(colonIdx + 1);
+                        return `<li class="note-ordered-li"><strong>${term}:</strong>${desc}</li>`;
+                      }
+                      return `<li class="note-ordered-li">${it}</li>`;
+                    }).join('')}
+                  </ol>
+                </div>
+              `).join('')}
+
+              ${obj.exam_takeaway ? `
+                <div class="note-exam-cue">
+                  <div class="note-cue-header">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z"/></svg>
+                    <span>SECURITY+ EXAM WATCH & HIGH-YIELD TRAP</span>
+                  </div>
+                  <p class="note-cue-body">${obj.exam_takeaway}</p>
+                </div>
+              ` : ''}
+
+              ${(obj.sections || []).map(sec => {
                 if (sec.type === "heading") {
                   return `<h4 class="note-subheading">${sec.text}</h4>`;
                 } else if (sec.type === "bullets") {
                   return `
-                    <ul class="note-bullets">
-                      ${sec.items.map(it => `<li class="note-bullet-li">${it}</li>`).join('')}
-                    </ul>
+                    <ol class="note-ordered-list">
+                      ${sec.items.map(it => `<li class="note-ordered-li">${it}</li>`).join('')}
+                    </ol>
                   `;
                 }
                 return "";
               }).join('')}
+
               <div class="note-drill-action">
-                <button class="secondary-pill-btn" onclick="app.startDomainDrill(${data.domain})">Practice ${obj.code} Questions →</button>
+                <button class="secondary-pill-btn" onclick="app.startDomainDrill(${data.domain})">Practice Objective ${obj.code} Questions →</button>
               </div>
             </div>
           </div>

@@ -2180,39 +2180,114 @@ body.theme-dark .status-pill.cyan {
   display: block;
 }
 
+.note-overview {
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 20px;
+  font-weight: 500;
+  padding: 12px 16px;
+  background-color: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-blue);
+}
+
+.note-subtopic-block {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 18px;
+  transition: border-color 0.15s ease;
+}
+
+.note-subtopic-block:hover {
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+body.theme-dark .note-subtopic-block {
+  background-color: #0c1220;
+  border-color: #1e293b;
+}
+
+body.theme-dark .note-subtopic-block:hover {
+  border-color: #3b82f6;
+}
+
 .note-subheading {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--accent-cyan);
-  margin: 16px 0 8px 0;
+  color: var(--accent-blue);
+  margin: 0 0 14px 0;
+  letter-spacing: -0.01em;
 }
 
-.note-subheading:first-child {
-  margin-top: 0;
+body.theme-dark .note-subheading {
+  color: #60a5fa;
 }
 
-.note-bullets {
-  list-style: none;
-  margin-bottom: 16px;
+.note-ordered-list {
+  list-style-type: decimal;
+  padding-left: 22px;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
-.note-bullet-li {
-  font-size: 0.98rem;
-  line-height: 1.6;
-  padding-left: 20px;
-  position: relative;
+.note-ordered-li {
+  font-size: 0.94rem;
+  line-height: 1.65;
   color: var(--text-primary);
+  padding-left: 4px;
 }
 
-.note-bullet-li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent-blue);
-  font-weight: bold;
+.note-ordered-li strong {
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+body.theme-dark .note-ordered-li strong {
+  color: #38bdf8;
+}
+
+/* Exam Day Cue & Warning Box */
+.note-exam-cue {
+  background-color: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin: 20px 0 16px 0;
+}
+
+body.theme-dark .note-exam-cue {
+  background-color: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.note-cue-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #b45309;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+body.theme-dark .note-cue-header {
+  color: #fbbf24;
+}
+
+.note-cue-body {
+  font-size: 0.91rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-weight: 600;
+  margin: 0;
 }
 
 .note-drill-action {
